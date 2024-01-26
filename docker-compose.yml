@@ -1,0 +1,26 @@
+# docker-compose.yml
+version: '3.8'
+services:
+  web:
+    build:
+      context: .
+    ports:
+      - "4000:4000"
+    depends_on:
+      - db
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgres@db:5432/ex_solomon
+      - SECRET_KEY_BASE=tZ+74jL1Lmy5lOWgEvoDZL4eTPt9zrSHM/q5w8qQtb2KbeT5vU3buqCu6PelEewQ
+  db:
+    image: postgres:13
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=ex_solomon
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+
+volumes:
+  db_data:
