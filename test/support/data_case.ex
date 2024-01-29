@@ -24,6 +24,7 @@ defmodule ExSolomon.DataCase do
       import Ecto.Changeset
       import Ecto.Query
       import ExSolomon.DataCase
+      import Support.Factory
     end
   end
 
