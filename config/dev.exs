@@ -5,7 +5,7 @@ config :ex_solomon, ExSolomon.Repo,
   username: "postgres",
   password: "postgres",
   hostname: "localhost",
-  database: "ex_solomon_dev",
+  database: "ex_solomon",
   stacktrace: true,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
