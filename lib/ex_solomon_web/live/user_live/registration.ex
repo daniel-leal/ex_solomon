@@ -1,4 +1,4 @@
-defmodule ExSolomonWeb.UserRegistrationLive do
+defmodule ExSolomonWeb.UserLive.Registration do
   use ExSolomonWeb, :live_view
 
   alias ExSolomon.Accounts

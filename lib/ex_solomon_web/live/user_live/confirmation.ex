@@ -1,4 +1,4 @@
-defmodule ExSolomonWeb.UserConfirmationLive do
+defmodule ExSolomonWeb.UserLive.Confirmation do
   use ExSolomonWeb, :live_view
 
   alias ExSolomon.Accounts

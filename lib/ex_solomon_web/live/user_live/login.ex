@@ -1,4 +1,4 @@
-defmodule ExSolomonWeb.UserLoginLive do
+defmodule ExSolomonWeb.UserLive.Login do
   use ExSolomonWeb, :live_view
 
   def render(assigns) do
@@ -8,7 +8,10 @@ defmodule ExSolomonWeb.UserLoginLive do
         Sign in to account
         <:subtitle>
           Don't have an account?
-          <.link navigate={~p"/users/register"} class="font-semibold text-brand hover:underline">
+          <.link
+            navigate={~p"/users/register"}
+            class="font-semibold text-brand hover:underline"
+          >
             Sign up
           </.link>
           for an account now.

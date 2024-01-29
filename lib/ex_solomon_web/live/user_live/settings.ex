@@ -1,4 +1,4 @@
-defmodule ExSolomonWeb.UserSettingsLive do
+defmodule ExSolomonWeb.UserLive.Settings do
   use ExSolomonWeb, :live_view
 
   alias ExSolomon.Accounts

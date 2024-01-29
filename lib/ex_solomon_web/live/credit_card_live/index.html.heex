@@ -1,0 +1,43 @@
+<.header>
+  Listing Credit cards
+  <:actions>
+    <.link patch={~p"/credit_cards/new"}>
+      <.button>New Credit card</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="credit_cards"
+  rows={@streams.credit_cards}
+  row_click={fn {_id, credit_card} -> JS.navigate(~p"/credit_cards/#{credit_card}") end}
+>
+  <:col :let={{_id, credit_card}} label="Name"><%= credit_card.name %></:col>
+  <:col :let={{_id, credit_card}} label="Limit"><%= credit_card.limit %></:col>
+  <:col :let={{_id, credit_card}} label="Invoice start day"><%= credit_card.invoice_start_day %></:col>
+  <:action :let={{_id, credit_card}}>
+    <div class="sr-only">
+      <.link navigate={~p"/credit_cards/#{credit_card}"}>Show</.link>
+    </div>
+    <.link patch={~p"/credit_cards/#{credit_card}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, credit_card}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: credit_card.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="credit_card-modal" show on_cancel={JS.patch(~p"/credit_cards")}>
+  <.live_component
+    module={ExSolomonWeb.CreditCardLive.FormComponent}
+    id={@credit_card.id || :new}
+    title={@page_title}
+    action={@live_action}
+    credit_card={@credit_card}
+    patch={~p"/credit_cards"}
+  />
+</.modal>

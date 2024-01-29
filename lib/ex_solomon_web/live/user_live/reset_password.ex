@@ -1,4 +1,4 @@
-defmodule ExSolomonWeb.UserResetPasswordLive do
+defmodule ExSolomonWeb.UserLive.ResetPassword do
   use ExSolomonWeb, :live_view
 
   alias ExSolomon.Accounts

@@ -1,0 +1,28 @@
+<.header>
+  Credit card <%= @credit_card.id %>
+  <:subtitle>This is a credit_card record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/credit_cards/#{@credit_card}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit credit_card</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Name"><%= @credit_card.name %></:item>
+  <:item title="Limit"><%= @credit_card.limit %></:item>
+  <:item title="Invoice start day"><%= @credit_card.invoice_start_day %></:item>
+</.list>
+
+<.back navigate={~p"/credit_cards"}>Back to credit_cards</.back>
+
+<.modal :if={@live_action == :edit} id="credit_card-modal" show on_cancel={JS.patch(~p"/credit_cards/#{@credit_card}")}>
+  <.live_component
+    module={ExSolomonWeb.CreditCardLive.FormComponent}
+    id={@credit_card.id}
+    title={@page_title}
+    action={@live_action}
+    credit_card={@credit_card}
+    patch={~p"/credit_cards/#{@credit_card}"}
+  />
+</.modal>
