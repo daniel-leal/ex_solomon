@@ -1,5 +1,5 @@
 defmodule ExSolomon.TransactionsTest do
-  use ExSolomon.DataCase
+  use ExSolomon.DataCase, async: true
 
   alias ExSolomon.Transactions
 
@@ -73,6 +73,16 @@ defmodule ExSolomon.TransactionsTest do
     test "change_credit_card/1 returns a credit_card changeset" do
       credit_card = credit_card_fixture()
       assert %Ecto.Changeset{} = Transactions.change_credit_card(credit_card)
+    end
+
+    test "list_categories/0 returns all categories" do
+      categories = insert_list(3, :category)
+      assert Transactions.Queries.list_categories() == categories
+    end
+
+    test "get_category/1 returns a category" do
+      category = insert(:category)
+      assert Transactions.Queries.get_category!(category.id) == category
     end
   end
 end

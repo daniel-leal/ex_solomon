@@ -53,7 +53,8 @@ defmodule ExSolomon.MixProject do
       {:dns_cluster, "~> 0.1.1"},
       {:plug_cowboy, "~> 2.5"},
       {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
-      {:money, "~> 1.12"}
+      {:money, "~> 1.12"},
+      {:ex_machina, "~> 2.7.0", only: :test}
     ]
   end
 

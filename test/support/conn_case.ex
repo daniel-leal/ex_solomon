@@ -28,6 +28,7 @@ defmodule ExSolomonWeb.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import ExSolomonWeb.ConnCase
+      import Support.Factory
     end
   end
 
