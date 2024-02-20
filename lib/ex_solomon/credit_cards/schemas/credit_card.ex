@@ -1,4 +1,4 @@
-defmodule ExSolomon.Transactions.Schemas.CreditCard do
+defmodule ExSolomon.CreditCards.Schemas.CreditCard do
   use Ecto.Schema
   import Ecto.Changeset
 
@@ -9,6 +9,8 @@ defmodule ExSolomon.Transactions.Schemas.CreditCard do
     field :limit, Money.Ecto.Amount.Type
     field :invoice_start_day, :integer
     field :user_id, :binary_id
+
+    belongs_to :user, ExSolomon.Accounts.Schemas.User, define_field: false
 
     timestamps(type: :utc_datetime)
   end

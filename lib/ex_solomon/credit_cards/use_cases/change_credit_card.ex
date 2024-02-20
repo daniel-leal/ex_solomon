@@ -1,5 +1,5 @@
-defmodule ExSolomon.Transactions.UseCases.ChangeCreditCard do
-  alias ExSolomon.Transactions.Schemas.CreditCard
+defmodule ExSolomon.CreditCards.UseCases.ChangeCreditCard do
+  alias ExSolomon.CreditCards.Schemas.CreditCard
 
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking credit_card changes.

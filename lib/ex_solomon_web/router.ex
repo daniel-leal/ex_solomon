@@ -75,6 +75,13 @@ defmodule ExSolomonWeb.Router do
 
       live "/credit_cards/:id", CreditCardLive.Show, :show
       live "/credit_cards/:id/show/edit", CreditCardLive.Show, :edit
+
+      live "/transactions", TransactionLive.Index, :index
+      live "/transactions/new", TransactionLive.Index, :new
+      live "/transactions/:id/edit", TransactionLive.Index, :edit
+
+      live "/transactions/:id", TransactionLive.Show, :show
+      live "/transactions/:id/show/edit", TransactionLive.Show, :edit
     end
   end
 

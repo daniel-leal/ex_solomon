@@ -5,18 +5,22 @@ defmodule ExSolomon.TransactionsFixtures do
   """
 
   @doc """
-  Generate a credit_card.
+  Generate a transaction.
   """
-  def credit_card_fixture(attrs \\ %{}) do
-    {:ok, credit_card} =
+  def transaction_fixture(attrs \\ %{}) do
+    {:ok, transaction} =
       attrs
       |> Enum.into(%{
-        invoice_start_day: 42,
-        limit: Money.new(4200),
-        name: "some name"
+        amount: 42,
+        date: ~D[2024-01-28],
+        description: "some description",
+        is_fixed: true,
+        is_revenue: true,
+        kind: "some kind",
+        recurring_day: 5
       })
-      |> ExSolomon.Transactions.create_credit_card()
+      |> ExSolomon.Transactions.create_transaction()
 
-    credit_card
+    transaction
   end
 end

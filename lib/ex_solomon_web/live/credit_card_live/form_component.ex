@@ -1,7 +1,7 @@
 defmodule ExSolomonWeb.CreditCardLive.FormComponent do
   use ExSolomonWeb, :live_component
 
-  alias ExSolomon.Transactions
+  alias ExSolomon.CreditCards
 
   @impl true
   def render(assigns) do
@@ -32,7 +32,7 @@ defmodule ExSolomonWeb.CreditCardLive.FormComponent do
 
   @impl true
   def update(%{credit_card: credit_card} = assigns, socket) do
-    changeset = Transactions.change_credit_card(credit_card)
+    changeset = CreditCards.change_credit_card(credit_card)
 
     {:ok,
      socket
@@ -44,7 +44,7 @@ defmodule ExSolomonWeb.CreditCardLive.FormComponent do
   def handle_event("validate", %{"credit_card" => credit_card_params}, socket) do
     changeset =
       socket.assigns.credit_card
-      |> Transactions.change_credit_card(credit_card_params)
+      |> CreditCards.change_credit_card(credit_card_params)
       |> Map.put(:action, :validate)
 
     {:noreply, assign_form(socket, changeset)}
@@ -55,7 +55,7 @@ defmodule ExSolomonWeb.CreditCardLive.FormComponent do
   end
 
   defp save_credit_card(socket, :edit, credit_card_params) do
-    case Transactions.update_credit_card(socket.assigns.credit_card, credit_card_params) do
+    case CreditCards.update_credit_card(socket.assigns.credit_card, credit_card_params) do
       {:ok, credit_card} ->
         notify_parent({:saved, credit_card})
 
@@ -70,7 +70,7 @@ defmodule ExSolomonWeb.CreditCardLive.FormComponent do
   end
 
   defp save_credit_card(socket, :new, credit_card_params) do
-    case Transactions.create_credit_card(credit_card_params) do
+    case CreditCards.create_credit_card(credit_card_params) do
       {:ok, credit_card} ->
         notify_parent({:saved, credit_card})
 

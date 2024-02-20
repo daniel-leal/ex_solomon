@@ -1,8 +1,8 @@
 defmodule ExSolomonWeb.CreditCardLive.Show do
   use ExSolomonWeb, :live_view
 
-  alias ExSolomon.Transactions
-  alias Transactions.Queries, as: TransactionsQueries
+  alias ExSolomon.CreditCards
+  alias CreditCards.Queries, as: CreditCardsQueries
 
   @impl true
   def mount(_params, _session, socket) do
@@ -14,7 +14,7 @@ defmodule ExSolomonWeb.CreditCardLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:credit_card, TransactionsQueries.get_credit_card!(id))}
+     |> assign(:credit_card, CreditCardsQueries.get_credit_card!(id))}
   end
 
   defp page_title(:show), do: "Show Credit card"

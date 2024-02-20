@@ -1,5 +1,5 @@
-defmodule ExSolomon.Transactions.UseCases.CreateCreditCard do
-  alias ExSolomon.Transactions.Schemas.CreditCard
+defmodule ExSolomon.CreditCards.UseCases.CreateCreditCard do
+  alias ExSolomon.CreditCards.Schemas.CreditCard
   alias ExSolomon.Repo
 
   @doc """

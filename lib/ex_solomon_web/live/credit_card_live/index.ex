@@ -1,13 +1,13 @@
 defmodule ExSolomonWeb.CreditCardLive.Index do
   use ExSolomonWeb, :live_view
 
-  alias ExSolomon.Transactions
-  alias Transactions.Queries, as: TransactionsQueries
-  alias ExSolomon.Transactions.Schemas.CreditCard
+  alias ExSolomon.CreditCards
+  alias CreditCards.Queries, as: CreditCardsQueries
+  alias ExSolomon.CreditCards.Schemas.CreditCard
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :credit_cards, TransactionsQueries.list_credit_cards())}
+    {:ok, stream(socket, :credit_cards, CreditCardsQueries.list_credit_cards())}
   end
 
   @impl true
@@ -18,7 +18,7 @@ defmodule ExSolomonWeb.CreditCardLive.Index do
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
     |> assign(:page_title, "Edit Credit card")
-    |> assign(:credit_card, TransactionsQueries.get_credit_card!(id))
+    |> assign(:credit_card, CreditCardsQueries.get_credit_card!(id))
   end
 
   defp apply_action(socket, :new, _params) do
@@ -43,8 +43,8 @@ defmodule ExSolomonWeb.CreditCardLive.Index do
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
-    credit_card = TransactionsQueries.get_credit_card!(id)
-    {:ok, _} = Transactions.delete_credit_card(credit_card)
+    credit_card = CreditCardsQueries.get_credit_card!(id)
+    {:ok, _} = CreditCards.delete_credit_card(credit_card)
 
     {:noreply, stream_delete(socket, :credit_cards, credit_card)}
   end
