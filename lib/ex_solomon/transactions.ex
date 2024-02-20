@@ -3,25 +3,19 @@ defmodule ExSolomon.Transactions do
   The Transactions context.
   """
 
-  # Credit Cards
   alias ExSolomon.Transactions.UseCases.{
-    ChangeCreditCard,
-    CreateCreditCard,
-    DeleteCreditCard,
-    UpdateCreditCard
+    ChangeTransaction,
+    CreateTransaction,
+    DeleteTransaction
   }
 
-  defdelegate change_credit_card(credit_card, attrs \\ %{}),
-    to: ChangeCreditCard,
+  defdelegate change_transaction(transaction, attrs \\ %{}),
+    to: ChangeTransaction,
     as: :execute
 
-  defdelegate create_credit_card(attrs \\ %{}), to: CreateCreditCard, as: :execute
+  defdelegate create_transaction(attrs \\ %{}), to: CreateTransaction, as: :execute
 
-  defdelegate delete_credit_card(credit_card),
-    to: DeleteCreditCard,
-    as: :execute
-
-  defdelegate update_credit_card(credit_card, attrs),
-    to: UpdateCreditCard,
+  defdelegate delete_transaction(transaction),
+    to: DeleteTransaction,
     as: :execute
 end

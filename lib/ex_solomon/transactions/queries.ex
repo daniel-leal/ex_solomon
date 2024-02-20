@@ -1,39 +1,8 @@
 defmodule ExSolomon.Transactions.Queries do
-  alias ExSolomon.Transactions.Schemas.{Category, CreditCard}
+  alias ExSolomon.Transactions.Schemas.{Category, Transaction}
   alias ExSolomon.Repo
 
   import Ecto.Query, warn: false
-
-  ## Credit Cards Queries
-
-  @doc """
-  Returns the list of credit_cards.
-
-  ## Examples
-
-      iex> list_credit_cards()
-      [%CreditCard{}, ...]
-
-  """
-  def list_credit_cards do
-    Repo.all(CreditCard)
-  end
-
-  @doc """
-  Gets a single credit_card.
-
-  Raises `Ecto.NoResultsError` if the Credit card does not exist.
-
-  ## Examples
-
-      iex> get_credit_card!(123)
-      %CreditCard{}
-
-      iex> get_credit_card!(456)
-      ** (Ecto.NoResultsError)
-
-  """
-  def get_credit_card!(id), do: Repo.get!(CreditCard, id)
 
   ### Categories Queries
 
@@ -63,4 +32,51 @@ defmodule ExSolomon.Transactions.Queries do
       ** (Ecto.NoResultsError)
   """
   def get_category!(id), do: Repo.get!(Category, id)
+
+  @doc """
+  Returns a queryable fixed transactions
+  """
+  def fixed_transactions_query do
+    from t in Transaction, where: t.is_fixed
+  end
+
+  @doc """
+  Returns the list of transactions.
+
+  ## Examples
+
+      iex> list_transactions()
+      [%Transaction{}, ...]
+
+  """
+  def list_transactions do
+    fixed_transactions = fixed_transactions_query()
+
+    union_query =
+      from q in Transaction,
+        where: not q.is_fixed,
+        union: ^fixed_transactions
+
+    query =
+      from s in subquery(union_query),
+        order_by: [asc_nulls_last: s.date, asc: s.recurring_day]
+
+    Repo.all(query)
+  end
+
+  @doc """
+  Gets a single transaction.
+
+  Raises `Ecto.NoResultsError` if the Transaction does not exist.
+
+  ## Examples
+
+      iex> get_transaction!(123)
+      %Transaction{}
+
+      iex> get_transaction!(456)
+      ** (Ecto.NoResultsError)
+
+  """
+  def get_transaction!(id), do: Repo.get!(Transaction, id)
 end

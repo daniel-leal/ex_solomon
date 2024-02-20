@@ -1,0 +1,77 @@
+<.header>
+  <%= @page_title %>
+  <:actions>
+    <.dropdown_button id="dropdownButton">
+      Nova Transação
+      <:dropdown_row label="Nova Receita" action={~p"/transactions/new?is_revenue=true"} />
+      <:dropdown_row label="Nova Despesa" action={~p"/transactions/new"} />
+    </.dropdown_button>
+  </:actions>
+</.header>
+
+<.table
+  id="transactions"
+  rows={@streams.transactions}
+  row_click={fn {_id, transaction} -> JS.navigate(~p"/transactions/#{transaction}") end}
+>
+  <:col :let={{_id, transaction}} label="Descrição">
+    <div :if={!transaction.is_revenue} class="text-red-500">
+      <%= transaction.description %>
+    </div>
+    <div :if={transaction.is_revenue} class="text-teal-500">
+      <%= transaction.description %>
+    </div>
+  </:col>
+  <:col :let={{_id, transaction}} label="Recorrente">
+    <div :if={transaction.is_fixed}>
+      <input type="checkbox" value="" class="sr-only peer" checked disabled />
+      <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600">
+      </div>
+    </div>
+
+    <div :if={!transaction.is_fixed}>
+      <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600">
+      </div>
+    </div>
+  </:col>
+  <:col :let={{_id, transaction}} label="Dia da recorrência">
+    <%= transaction.recurring_day %>
+  </:col>
+  <:col :let={{_id, transaction}} label="Data"><%= local_date(transaction.date) %></:col>
+  alias ExSolomon.Transactions.Types.TransactionTypes
+  <:col :let={{_id, transaction}} label="Tipo">
+    <%= TransactionTypes.get_description(transaction.kind) %>
+  </:col>
+  <:col :let={{_id, transaction}} label="Valor"><%= transaction.amount %></:col>
+  <:action :let={{_id, transaction}}>
+    <div class="sr-only">
+      <.link navigate={~p"/transactions/#{transaction}"}>Exibir</.link>
+    </div>
+  </:action>
+  <:action :let={{id, transaction}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: transaction.id}) |> hide("##{id}")}
+      data-confirm="Tem certeza?"
+    >
+      Deletar
+    </.link>
+  </:action>
+</.table>
+
+<.modal
+  :if={@live_action in [:new]}
+  id="transaction-modal"
+  show
+  on_cancel={JS.patch(~p"/transactions")}
+>
+  <.live_component
+    module={ExSolomonWeb.TransactionLive.FormComponent}
+    id={@transaction.id || :new}
+    title={@page_title}
+    action={@live_action}
+    transaction={@transaction}
+    categories={@categories}
+    transaction_kinds={@transaction_kinds}
+    patch={~p"/transactions"}
+  />
+</.modal>

@@ -10,7 +10,8 @@ defmodule ExSolomon.Application do
     children = [
       ExSolomonWeb.Telemetry,
       ExSolomon.Repo,
-      {DNSCluster, query: Application.get_env(:ex_solomon, :dns_cluster_query) || :ignore},
+      {DNSCluster,
+       query: Application.get_env(:ex_solomon, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: ExSolomon.PubSub},
       # Start the Finch HTTP client for sending emails
       {Finch, name: ExSolomon.Finch},

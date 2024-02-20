@@ -14,7 +14,9 @@
 >
   <:col :let={{_id, credit_card}} label="Name"><%= credit_card.name %></:col>
   <:col :let={{_id, credit_card}} label="Limit"><%= credit_card.limit %></:col>
-  <:col :let={{_id, credit_card}} label="Invoice start day"><%= credit_card.invoice_start_day %></:col>
+  <:col :let={{_id, credit_card}} label="Invoice start day">
+    <%= credit_card.invoice_start_day %>
+  </:col>
   <:action :let={{_id, credit_card}}>
     <div class="sr-only">
       <.link navigate={~p"/credit_cards/#{credit_card}"}>Show</.link>
@@ -31,7 +33,12 @@
   </:action>
 </.table>
 
-<.modal :if={@live_action in [:new, :edit]} id="credit_card-modal" show on_cancel={JS.patch(~p"/credit_cards")}>
+<.modal
+  :if={@live_action in [:new, :edit]}
+  id="credit_card-modal"
+  show
+  on_cancel={JS.patch(~p"/credit_cards")}
+>
   <.live_component
     module={ExSolomonWeb.CreditCardLive.FormComponent}
     id={@credit_card.id || :new}

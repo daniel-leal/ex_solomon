@@ -66,7 +66,9 @@ defmodule ExSolomonWeb.UserSessionControllerTest do
         })
 
       assert redirected_to(conn) == ~p"/"
-      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "Account created successfully"
+
+      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
+               "Account created successfully"
     end
 
     test "login following password update", %{conn: conn, user: user} do
@@ -81,7 +83,9 @@ defmodule ExSolomonWeb.UserSessionControllerTest do
         })
 
       assert redirected_to(conn) == ~p"/users/settings"
-      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~ "Password updated successfully"
+
+      assert Phoenix.Flash.get(conn.assigns.flash, :info) =~
+               "Password updated successfully"
     end
 
     test "redirects to login page with invalid credentials", %{conn: conn} do

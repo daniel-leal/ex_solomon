@@ -28,6 +28,9 @@ defmodule ExSolomon.Accounts.UseCases.UpdateUserEmail do
 
     Ecto.Multi.new()
     |> Ecto.Multi.update(:user, changeset)
-    |> Ecto.Multi.delete_all(:tokens, UserToken.by_user_and_contexts_query(user, [context]))
+    |> Ecto.Multi.delete_all(
+      :tokens,
+      UserToken.by_user_and_contexts_query(user, [context])
+    )
   end
 end

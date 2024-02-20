@@ -54,6 +54,8 @@ defmodule ExSolomonWeb do
       use Phoenix.LiveView,
         layout: {ExSolomonWeb.Layouts, :app}
 
+      import ExSolomonWeb.Helpers
+
       unquote(html_helpers())
     end
   end
