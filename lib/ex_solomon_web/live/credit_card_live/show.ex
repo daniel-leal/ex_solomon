@@ -1,7 +1,8 @@
 defmodule ExSolomonWeb.CreditCardLive.Show do
-  use ExSolomonWeb, :live_view
+  use ExSolomonWeb, :live_view_logged
 
   alias ExSolomon.CreditCards
+  alias ExSolomon.CreditCards.Schemas.CreditCard
   alias CreditCards.Queries, as: CreditCardsQueries
 
   @impl true
@@ -17,6 +18,6 @@ defmodule ExSolomonWeb.CreditCardLive.Show do
      |> assign(:credit_card, CreditCardsQueries.get_credit_card!(id))}
   end
 
-  defp page_title(:show), do: "Show Credit card"
-  defp page_title(:edit), do: "Edit Credit card"
+  defp page_title(:show), do: "Exibir Cartão"
+  defp page_title(:edit), do: "Editar Cartão"
 end

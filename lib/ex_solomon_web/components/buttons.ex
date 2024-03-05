@@ -15,7 +15,7 @@ defmodule ExSolomonWeb.Buttons do
     <button
       id={@id}
       data-dropdown-toggle="dropdown"
-      class="text-white bg-zinc-700 hover:bg-zinc-800 focus:ring-4 focus:outline-none focus:ring-zinc-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:bg-zinc-600 dark:hover:bg-zinc-700 dark:focus:ring-zinc-800 #{@class}"
+      class="text-white font-semibold bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-zinc-300 rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center #{@class}"
       type="button"
     >
       <%= render_slot(@inner_block) %>
@@ -37,7 +37,7 @@ defmodule ExSolomonWeb.Buttons do
     </button>
     <div
       id="dropdown"
-      class="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700"
+      class="z-10 hidden bg-white divide-y divide-zinc-100 rounded-lg shadow w-44 dark:bg-zinc-500"
     >
       <ul
         class="py-2 text-sm text-gray-700 dark:text-gray-200"
@@ -46,7 +46,7 @@ defmodule ExSolomonWeb.Buttons do
         <li :for={row <- @dropdown_row}>
           <.link
             patch={row[:action]}
-            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
+            class="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-zinc-600 dark:hover:text-white"
           >
             <%= row[:label] %>
           </.link>

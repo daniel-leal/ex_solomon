@@ -52,6 +52,17 @@ defmodule ExSolomonWeb do
   def live_view do
     quote do
       use Phoenix.LiveView,
+        layout: {ExSolomonWeb.Layouts, :auth}
+
+      import ExSolomonWeb.Helpers
+
+      unquote(html_helpers())
+    end
+  end
+
+  def live_view_logged do
+    quote do
+      use Phoenix.LiveView,
         layout: {ExSolomonWeb.Layouts, :app}
 
       import ExSolomonWeb.Helpers

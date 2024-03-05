@@ -3,8 +3,10 @@
   <:actions>
     <.dropdown_button id="dropdownButton">
       Nova Transação
-      <:dropdown_row label="Nova Receita" action={~p"/transactions/new?is_revenue=true"} />
-      <:dropdown_row label="Nova Despesa" action={~p"/transactions/new"} />
+      <:dropdown_row label="Receita" action={~p"/transactions/new?is_revenue=true"}>
+        Receita
+      </:dropdown_row>
+      <:dropdown_row label="Despesa" action={~p"/transactions/new"} />
     </.dropdown_button>
   </:actions>
 </.header>
@@ -15,34 +17,43 @@
   row_click={fn {_id, transaction} -> JS.navigate(~p"/transactions/#{transaction}") end}
 >
   <:col :let={{_id, transaction}} label="Descrição">
-    <div :if={!transaction.is_revenue} class="text-red-500">
+    <div :if={!transaction.is_revenue} class="text-red-600 dark:text-red-500">
       <%= transaction.description %>
     </div>
-    <div :if={transaction.is_revenue} class="text-teal-500">
+    <div :if={transaction.is_revenue} class="text-emerald-600 dark:test-emerald-400">
       <%= transaction.description %>
     </div>
   </:col>
+
   <:col :let={{_id, transaction}} label="Recorrente">
     <div :if={transaction.is_fixed}>
       <input type="checkbox" value="" class="sr-only peer" checked disabled />
-      <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600">
+      <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-600">
       </div>
     </div>
 
     <div :if={!transaction.is_fixed}>
-      <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-teal-600">
+      <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-zinc-400 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-600">
       </div>
     </div>
   </:col>
-  <:col :let={{_id, transaction}} label="Dia da recorrência">
-    <%= transaction.recurring_day %>
-  </:col>
-  <:col :let={{_id, transaction}} label="Data"><%= local_date(transaction.date) %></:col>
-  alias ExSolomon.Transactions.Types.TransactionTypes
+
   <:col :let={{_id, transaction}} label="Tipo">
     <%= TransactionTypes.get_description(transaction.kind) %>
   </:col>
-  <:col :let={{_id, transaction}} label="Valor"><%= transaction.amount %></:col>
+
+  <:col :let={{_id, transaction}} label="Data" header_class="text-center">
+    <div class="text-center">
+      <%= local_date(transaction.date) %>
+    </div>
+  </:col>
+
+  <:col :let={{_id, transaction}} label="Valor" header_class="text-right">
+    <div class="text-right">
+      <%= transaction.amount %>
+    </div>
+  </:col>
+
   <:action :let={{_id, transaction}}>
     <div class="sr-only">
       <.link navigate={~p"/transactions/#{transaction}"}>Exibir</.link>

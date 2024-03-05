@@ -19,10 +19,12 @@
 import "phoenix_html";
 // Establish Phoenix Socket and LiveView configuration.
 import Alpine from "alpinejs";
-import "flowbite/dist/flowbite.phoenix.js";
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
+import "flowbite/dist/flowbite.phoenix.js";
+
+import darkModeHook from "../vendor/dark_mode";
 
 Alpine.start();
 window.Alpine = Alpine;
@@ -34,6 +36,8 @@ Hooks.InitAlpine = {
     this.__x.init();
   },
 };
+
+Hooks.DarkThemeToggle = darkModeHook;
 
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")

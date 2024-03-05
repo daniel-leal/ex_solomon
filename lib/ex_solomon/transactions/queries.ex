@@ -59,7 +59,7 @@ defmodule ExSolomon.Transactions.Queries do
 
     query =
       from s in subquery(union_query),
-        order_by: [asc_nulls_last: s.date, asc: s.recurring_day]
+        order_by: [desc_nulls_last: s.date, asc: s.recurring_day]
 
     Repo.all(query)
   end

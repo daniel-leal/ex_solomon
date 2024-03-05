@@ -1,5 +1,5 @@
 defmodule ExSolomonWeb.TransactionLive.Index do
-  use ExSolomonWeb, :live_view
+  use ExSolomonWeb, :live_view_logged
 
   alias ExSolomon.Transactions
   alias ExSolomon.Transactions.Schemas.Transaction
@@ -42,7 +42,7 @@ defmodule ExSolomonWeb.TransactionLive.Index do
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Listagem de Transações")
+    |> assign(:page_title, "Transações")
     |> assign(:transaction, nil)
   end
 

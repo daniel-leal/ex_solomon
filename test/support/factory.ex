@@ -24,7 +24,7 @@ defmodule Support.Factory do
     %CreditCard{
       name: sequence(:name, ["Visa", "Mastercard", "Amex"]),
       limit: sequence(:limit, [1000, 2000, 3000]),
-      invoice_start_day: sequence(:invoice_start_day, [1, 5, 10])
+      invoice_start_day: :rand.uniform(29)
     }
   end
 
