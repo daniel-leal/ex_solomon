@@ -1,20 +1,20 @@
 <.header>
-  Credit card <%= @credit_card.id %>
-  <:subtitle>This is a credit_card record from your database.</:subtitle>
+  <%= @credit_card.name %>
+  <:subtitle>Este é um cartão de crédito salvo na sua base de dados.</:subtitle>
   <:actions>
     <.link patch={~p"/credit_cards/#{@credit_card}/show/edit"} phx-click={JS.push_focus()}>
-      <.button>Edit credit_card</.button>
+      <.button>Editar cartão</.button>
     </.link>
   </:actions>
 </.header>
 
 <.list>
-  <:item title="Name"><%= @credit_card.name %></:item>
-  <:item title="Limit"><%= @credit_card.limit %></:item>
-  <:item title="Invoice start day"><%= @credit_card.invoice_start_day %></:item>
+  <:item title="Limite"><%= @credit_card.limit %></:item>
+  <:item title="Fatura Atual"><%= CreditCard.get_current_invoice(@credit_card) %></:item>
+  <:item title="Melhor dia de compra"><%= @credit_card.invoice_start_day %></:item>
 </.list>
 
-<.back navigate={~p"/credit_cards"}>Back to credit_cards</.back>
+<.back navigate={~p"/credit_cards"}>Voltar para a listagem</.back>
 
 <.modal
   :if={@live_action == :edit}

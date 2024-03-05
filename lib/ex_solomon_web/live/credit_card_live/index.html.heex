@@ -1,8 +1,8 @@
 <.header>
-  Listing Credit cards
+  <%= @page_title %>
   <:actions>
     <.link patch={~p"/credit_cards/new"}>
-      <.button>New Credit card</.button>
+      <.button>Novo cartão</.button>
     </.link>
   </:actions>
 </.header>
@@ -12,23 +12,28 @@
   rows={@streams.credit_cards}
   row_click={fn {_id, credit_card} -> JS.navigate(~p"/credit_cards/#{credit_card}") end}
 >
-  <:col :let={{_id, credit_card}} label="Name"><%= credit_card.name %></:col>
-  <:col :let={{_id, credit_card}} label="Limit"><%= credit_card.limit %></:col>
-  <:col :let={{_id, credit_card}} label="Invoice start day">
-    <%= credit_card.invoice_start_day %>
+  <:col :let={{_id, credit_card}} label="Nome"><%= credit_card.name %></:col>
+
+  <:col :let={{_id, credit_card}} label="Fatura Atual">
+    <%= CreditCard.get_current_invoice(credit_card) %>
   </:col>
+
+  <:col :let={{_id, credit_card}} label="Limite" header_class="text-right">
+    <div class="text-right"><%= credit_card.limit %></div>
+  </:col>
+
   <:action :let={{_id, credit_card}}>
     <div class="sr-only">
-      <.link navigate={~p"/credit_cards/#{credit_card}"}>Show</.link>
+      <.link navigate={~p"/credit_cards/#{credit_card}"}>Exibir</.link>
     </div>
-    <.link patch={~p"/credit_cards/#{credit_card}/edit"}>Edit</.link>
+    <.link patch={~p"/credit_cards/#{credit_card}/edit"}>Editar</.link>
   </:action>
   <:action :let={{id, credit_card}}>
     <.link
       phx-click={JS.push("delete", value: %{id: credit_card.id}) |> hide("##{id}")}
-      data-confirm="Are you sure?"
+      data-confirm="Tem certeza?"
     >
-      Delete
+      Deletar
     </.link>
   </:action>
 </.table>

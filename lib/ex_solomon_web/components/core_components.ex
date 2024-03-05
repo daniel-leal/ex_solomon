@@ -53,7 +53,7 @@ defmodule ExSolomonWeb.CoreComponents do
     >
       <div
         id={"#{@id}-bg"}
-        class="bg-zinc-50/90 fixed inset-0 transition-opacity"
+        class="bg-zinc-50/90 dark:bg-zinc-700/90 fixed inset-0 transition-opacity"
         aria-hidden="true"
       />
       <div
@@ -71,7 +71,7 @@ defmodule ExSolomonWeb.CoreComponents do
               phx-window-keydown={JS.exec("data-cancel", to: "##{@id}")}
               phx-key="escape"
               phx-click-away={JS.exec("data-cancel", to: "##{@id}")}
-              class="shadow-zinc-700/10 ring-zinc-700/10 relative hidden rounded-2xl bg-white p-14 shadow-lg ring-1 transition"
+              class="shadow-zinc-700/10 dark:bg-zinc-800 ring-zinc-700/10 relative hidden rounded-2xl bg-white p-14 shadow-lg ring-1 transition"
             >
               <div class="absolute top-6 right-5">
                 <button
@@ -80,7 +80,7 @@ defmodule ExSolomonWeb.CoreComponents do
                   class="-m-3 flex-none p-3 opacity-20 hover:opacity-40"
                   aria-label={gettext("close")}
                 >
-                  <.icon name="hero-x-mark-solid" class="h-5 w-5" />
+                  <.icon name="hero-x-mark-solid" class="h-5 w-5 text-muted-foreground" />
                 </button>
               </div>
               <div id={"#{@id}-content"}>
@@ -215,7 +215,7 @@ defmodule ExSolomonWeb.CoreComponents do
   def simple_form(assigns) do
     ~H"""
     <.form :let={f} for={@for} as={@as} {@rest}>
-      <div class="mt-10 space-y-8 bg-white">
+      <div class="mt-10 space-y-8">
         <%= render_slot(@inner_block, f) %>
         <div :for={action <- @actions} class="mt-2 flex items-center justify-between gap-6">
           <%= render_slot(action, f) %>
@@ -244,7 +244,7 @@ defmodule ExSolomonWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "phx-submit-loading:opacity-75 rounded-lg bg-zinc-900 hover:bg-zinc-700 py-2 px-3",
+        "phx-submit-loading:opacity-75 rounded-lg bg-emerald-600 hover:bg-emerald-700 py-2 px-3",
         "text-sm font-semibold leading-6 text-white active:text-white/80",
         @class
       ]}
@@ -328,7 +328,7 @@ defmodule ExSolomonWeb.CoreComponents do
 
     ~H"""
     <div phx-feedback-for={@name}>
-      <label class="flex items-center gap-4 text-sm leading-6 text-zinc-600">
+      <label class="flex items-center gap-4 text-sm leading-6 text-foreground">
         <input type="hidden" name={@name} value="false" />
         <input
           type="checkbox"
@@ -336,7 +336,7 @@ defmodule ExSolomonWeb.CoreComponents do
           name={@name}
           value="true"
           checked={@checked}
-          class="rounded border-zinc-300 text-zinc-900 focus:ring-0"
+          class="rounded border-zinc-300 text-emerald-700 dark:text-emerald-600 focus:ring-0"
           {@rest}
         />
         <%= @label %>
@@ -353,7 +353,12 @@ defmodule ExSolomonWeb.CoreComponents do
       <select
         id={@id}
         name={@name}
-        class="mt-2 block w-full rounded-md border border-gray-300 bg-white shadow-sm focus:border-zinc-400 focus:ring-0 sm:text-sm"
+        class={[
+          "mt-2 block w-full rounded-lg border border-gray-300 text-foreground bg-white shadow-sm p-2.5",
+          "focus:border-emerald-400 focus:ring-emerald-400 sm:text-sm",
+          "dark:bg-zinc-800 dark:border-gray-500 dark:focus:ring-emerald-800 dark:focus:ring-4",
+          "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-emerald-400 focus:ring-emerald-500"
+        ]}
         multiple={@multiple}
         {@rest}
       >
@@ -391,7 +396,7 @@ defmodule ExSolomonWeb.CoreComponents do
       <.label for={@id}><%= @label %></.label>
       <div class="relative mt-2 rounded-md shadow-sm">
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-          <span class="text-gray-600 sm:text-sm">R$</span>
+          <span class="text-muted-foreground sm:text-sm">R$</span>
         </div>
         <input
           type="number"
@@ -400,8 +405,9 @@ defmodule ExSolomonWeb.CoreComponents do
           id={@id}
           value={normalize_money(@value)}
           class={[
-            "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
-            "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400 text-right",
+            "border border-gray-300 text-foreground text-sm rounded-lg block w-full p-2.5",
+            "dark:bg-zinc-800 dark:border-gray-500 dark:focus:ring-emerald-800 dark:focus:ring-4",
+            "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-emerald-400 focus:ring-emerald-400 text-right",
             @errors == [] && "border-zinc-300 focus:border-zinc-400",
             @errors != [] && "border-rose-400 focus:border-rose-400"
           ]}
@@ -424,8 +430,9 @@ defmodule ExSolomonWeb.CoreComponents do
         id={@id}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
-          "mt-2 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-6",
-          "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-zinc-400",
+          "border border-gray-300 text-foreground text-sm rounded-lg block w-full p-2.5",
+          "dark:bg-zinc-800 dark:border-gray-500 dark:focus:ring-emerald-800 dark:focus:ring-4",
+          "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-emerald-400 focus:ring-emerald-500",
           @errors == [] && "border-zinc-300 focus:border-zinc-400",
           @errors != [] && "border-rose-400 focus:border-rose-400"
         ]}
@@ -444,7 +451,7 @@ defmodule ExSolomonWeb.CoreComponents do
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-6 text-zinc-800">
+    <label for={@for} class="block text-sm font-semibold leading-6 text-foreground">
       <%= render_slot(@inner_block) %>
     </label>
     """
@@ -477,10 +484,10 @@ defmodule ExSolomonWeb.CoreComponents do
     ~H"""
     <header class={[@actions != [] && "flex items-center justify-between gap-6", @class]}>
       <div>
-        <h1 class="text-lg font-semibold leading-8 text-zinc-800">
+        <h1 class="text-2xl font-semibold leading-8 text-emerald-700 dark:text-emerald-600">
           <%= render_slot(@inner_block) %>
         </h1>
-        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-zinc-600">
+        <p :if={@subtitle != []} class="mt-2 text-sm leading-6 text-muted-foreground">
           <%= render_slot(@subtitle) %>
         </p>
       </div>
@@ -513,6 +520,8 @@ defmodule ExSolomonWeb.CoreComponents do
 
   slot :col, required: true do
     attr :label, :string
+    attr :header_class, :string
+    attr :body_class, :string
   end
 
   slot :action, doc: "the slot for showing user actions in the last table column"
@@ -524,40 +533,44 @@ defmodule ExSolomonWeb.CoreComponents do
       end
 
     ~H"""
-    <div class="overflow-y-auto px-4 sm:overflow-visible md:px-0">
-      <table class="w-[40rem] mt-11 sm:min-w-full">
-        <thead class="text-sm text-left leading-6 text-zinc-500">
+    <div class="relative overflow-x-auto mt-10 shadow-md sm:rounded-lg">
+      <table class="w-full text-sm  rtl:text-right text-left text-zinc-500 dark:text-zinc-400">
+        <thead class="text-xs text-zinc-700 uppercase bg-zinc-50 dark:bg-zinc-700 dark:text-zinc-400">
           <tr>
-            <th :for={col <- @col} class="p-0 pb-4 pr-6 font-normal"><%= col[:label] %></th>
-            <th :if={@action != []} class="relative p-0 pb-4">
+            <th
+              :for={col <- @col}
+              scope="col"
+              class={[
+                "px-6 py-5",
+                col[:header_class]
+              ]}
+            >
+              <%= col[:label] %>
+            </th>
+            <th :if={@action != []} class="px-6 py-3">
               <span class="sr-only"><%= gettext("Actions") %></span>
             </th>
           </tr>
         </thead>
-        <tbody
-          id={@id}
-          phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}
-          class="relative divide-y divide-zinc-100 border-t border-zinc-200 text-sm leading-6 text-zinc-700"
-        >
-          <tr :for={row <- @rows} id={@row_id && @row_id.(row)} class="group hover:bg-zinc-50">
+        <tbody id={@id} phx-update={match?(%Phoenix.LiveView.LiveStream{}, @rows) && "stream"}>
+          <tr
+            :for={row <- @rows}
+            id={@row_id && @row_id.(row)}
+            class="bg-white border-b dark:bg-zinc-800 dark:border-zinc-700 hover:bg-zinc-50 dark:hover:bg-zinc-700"
+          >
             <td
-              :for={{col, i} <- Enum.with_index(@col)}
+              :for={{col, _i} <- Enum.with_index(@col)}
               phx-click={@row_click && @row_click.(row)}
-              class={["relative p-0", @row_click && "hover:cursor-pointer"]}
+              class={["px-6 py-4", @row_click && "hover:cursor-pointer"]}
             >
-              <div class="block py-4 pr-6">
-                <span class="absolute -inset-y-px right-0 -left-4 group-hover:bg-zinc-50 sm:rounded-l-xl" />
-                <span class={["relative", i == 0 && "font-semibold text-zinc-900"]}>
-                  <%= render_slot(col, @row_item.(row)) %>
-                </span>
-              </div>
+              <%= render_slot(col, @row_item.(row)) %>
             </td>
-            <td :if={@action != []} class="relative w-14 p-0">
+            <td :if={@action != []}>
               <div class="relative whitespace-nowrap py-4 text-right text-sm font-medium">
-                <span class="absolute -inset-y-px -right-4 left-0 group-hover:bg-zinc-50 sm:rounded-r-xl" />
+                <span class="absolute -inset-y-px group-hover:bg-zinc-50 sm:rounded-r-xl" />
                 <span
                   :for={action <- @action}
-                  class="relative ml-4 font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+                  class="relative mx-4 font-medium leading-6 text-foreground hover:text-zinc-400"
                 >
                   <%= render_slot(action, @row_item.(row)) %>
                 </span>
@@ -587,10 +600,13 @@ defmodule ExSolomonWeb.CoreComponents do
   def list(assigns) do
     ~H"""
     <div class="mt-14">
-      <dl class="-my-4 divide-y divide-zinc-100">
-        <div :for={item <- @item} class="flex gap-4 py-4 text-sm leading-6 sm:gap-8">
-          <dt class="w-1/4 flex-none text-zinc-500"><%= item.title %></dt>
-          <dd class="text-zinc-700"><%= render_slot(item) %></dd>
+      <dl class="-my-4 divide-y max-w-[500px] dark:divide-zinc-700 rounded-lg">
+        <div
+          :for={item <- @item}
+          class="flex p-2 justify-between hover:bg-gray-50 gap-4 py-4 text-sm leading-6 sm:gap-8 dark:hover:bg-zinc-800"
+        >
+          <dt class="flex-none text-foreground"><%= item.title %></dt>
+          <dd class="text-muted-foreground"><%= render_slot(item) %></dd>
         </div>
       </dl>
     </div>
@@ -612,7 +628,7 @@ defmodule ExSolomonWeb.CoreComponents do
     <div class="mt-16">
       <.link
         navigate={@navigate}
-        class="text-sm font-semibold leading-6 text-zinc-900 hover:text-zinc-700"
+        class="text-sm font-semibold leading-6 text-foreground  hover:text-zinc-600 dark:text-zinc-400 dark:hover:text-zinc-500"
       >
         <.icon name="hero-arrow-left-solid" class="h-3 w-3" />
         <%= render_slot(@inner_block) %>

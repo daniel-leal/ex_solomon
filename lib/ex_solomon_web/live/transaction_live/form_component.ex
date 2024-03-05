@@ -8,7 +8,12 @@ defmodule ExSolomonWeb.TransactionLive.FormComponent do
     ~H"""
     <div>
       <.header>
-        <%= @title %>
+        <div :if={!@transaction.is_revenue} class="text-rose-500 dark:text-rose-400">
+          <%= @title %>
+        </div>
+        <div :if={@transaction.is_revenue}>
+          <%= @title %>
+        </div>
         <:subtitle>Formulário de gerenciamento de transações.</:subtitle>
       </.header>
 
@@ -23,8 +28,8 @@ defmodule ExSolomonWeb.TransactionLive.FormComponent do
         <.input field={@form[:user_id]} type="hidden" />
         <.input field={@form[:is_revenue]} type="hidden" />
 
-        <div class="grid grid-cols-2 divide-x">
-          <div class="pr-4 space-y-4">
+        <div class="xs:space-y-4 md:grid md:grid-cols-2 md:divide-x">
+          <div class="md:pr-4 space-y-4">
             <.input field={@form[:description]} type="text" label="Descrição" />
             <.input field={@form[:amount]} type="money" label="Valor" />
             <.input
@@ -43,7 +48,7 @@ defmodule ExSolomonWeb.TransactionLive.FormComponent do
             />
           </div>
 
-          <div class="pl-4 space-y-4">
+          <div class="md:pl-4 space-y-4">
             <span x-show="is_fixed">
               <.input field={@form[:recurring_day]} type="number" label="Dia da recorrência" />
             </span>
@@ -82,8 +87,6 @@ defmodule ExSolomonWeb.TransactionLive.FormComponent do
 
   @impl true
   def handle_event("validate", %{"transaction" => transaction_params}, socket) do
-    IO.inspect(transaction_params)
-
     changeset =
       socket.assigns.transaction
       |> Transactions.change_transaction(transaction_params)

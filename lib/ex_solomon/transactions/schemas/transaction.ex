@@ -52,6 +52,7 @@ defmodule ExSolomon.Transactions.Schemas.Transaction do
     |> validate_inclusion(:kind, Enum.map(TransactionTypes.kinds(), & &1.value))
     |> validate_date_required()
     |> validate_recurring_day_required()
+    |> validate_number(:recurring_day, less_than: 29)
   end
 
   defp validate_date_required(changeset) do

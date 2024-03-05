@@ -9,7 +9,7 @@ defmodule ExSolomonWeb.CreditCardLive.FormComponent do
     <div>
       <.header>
         <%= @title %>
-        <:subtitle>Use this form to manage credit_card records in your database.</:subtitle>
+        <:subtitle>Formulário de gerenciamento de cartões.</:subtitle>
       </.header>
 
       <.simple_form
@@ -19,11 +19,11 @@ defmodule ExSolomonWeb.CreditCardLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
-        <.input field={@form[:name]} type="text" label="Name" />
-        <.input field={@form[:limit]} type="text" label="Limit" />
-        <.input field={@form[:invoice_start_day]} type="number" label="Invoice start day" />
+        <.input field={@form[:name]} type="text" label="Nome" />
+        <.input field={@form[:limit]} type="text" type="money" label="Limite" />
+        <.input field={@form[:invoice_start_day]} type="number" label="Melhor dia de compra" />
         <:actions>
-          <.button phx-disable-with="Saving...">Save Credit card</.button>
+          <.button phx-disable-with="Salvando...">Salvar</.button>
         </:actions>
       </.simple_form>
     </div>

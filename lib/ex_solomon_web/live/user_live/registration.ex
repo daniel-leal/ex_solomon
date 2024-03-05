@@ -11,40 +11,56 @@ defmodule ExSolomonWeb.UserLive.Registration do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">
-        Register for an account
-        <:subtitle>
-          Already registered?
-          <.link navigate={~p"/users/log_in"} class="font-semibold text-brand hover:underline">
-            Sign in
-          </.link>
-          to your account now.
-        </:subtitle>
-      </.header>
-
-      <.simple_form
-        for={@form}
-        id="registration_form"
-        phx-submit="save"
-        phx-change="validate"
-        phx-trigger-action={@trigger_submit}
-        action={~p"/users/log_in?_action=registered"}
-        method="post"
+    <div class="p-8">
+      <.link
+        class="invisible md:visible lg:visible absolute right-8 top-8 select-none rounded-md p-3 text-gray-900 hover:bg-gray-100 dark:text-foreground dark:hover:bg-zinc-600"
+        patch={~p"/users/log_in"}
       >
-        <.error :if={@check_errors}>
-          Oops, something went wrong! Please check the errors below.
-        </.error>
+        Fazer Login
+      </.link>
 
-        <.input field={@form[:email]} type="email" label="Email" required />
-        <.input field={@form[:password]} type="password" label="Password" required />
+      <div class="flex w-[350px] flex-col justify-center">
+        <div class="flex flex-col text-center">
+          <h1 class="text-2xl font-semibold tracking-tighter">
+            Crie sua conta grátis!
+          </h1>
+        </div>
 
-        <:actions>
-          <.button phx-disable-with="Creating account..." class="w-full">
-            Create an account
-          </.button>
-        </:actions>
-      </.simple_form>
+        <.simple_form
+          for={@form}
+          id="registration_form"
+          phx-submit="save"
+          phx-change="validate"
+          phx-trigger-action={@trigger_submit}
+          action={~p"/users/log_in?_action=registered"}
+          method="post"
+        >
+          <.error :if={@check_errors}>
+            Ocorreu um erro ao realizar o cadastro. Tente novamente mais tarde!
+          </.error>
+
+          <.input field={@form[:email]} type="email" label="Email" required />
+          <.input field={@form[:password]} type="password" label="Senha" required />
+
+          <:actions>
+            <div class="flex flex-1 flex-col gap-4">
+              <.button
+                phx-disable-with="Criando conta..."
+                class="w-full bg-emerald-700 hover:bg-emerald-800"
+              >
+                Criar conta
+              </.button>
+
+              <.link
+                class="md:invisible lg:invisible text-foreground bg-gray-300 dark:bg-zinc-600 dark:hover:bg-zinc-700 p-2 text-center rounded-lg"
+                patch={~p"/users/log_in"}
+              >
+                Voltar para Login
+              </.link>
+            </div>
+          </:actions>
+        </.simple_form>
+      </div>
     </div>
     """
   end

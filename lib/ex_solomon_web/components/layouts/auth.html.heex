@@ -1,0 +1,28 @@
+<div class="md:grid min-h-screen md:grid-cols-2 antialiased">
+  <div class="flex h-full flex-col justify-between border-r border-foreground/5 pt-5 pl-4 md:p-10 bg-emerald-900 text-gray-50">
+    <div class="flex leading-6 items-center gap-3 text-lg font-medium">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="lucide lucide-badge-dollar-sign"
+      >
+        <path d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z" /><path d="M16 8h-6a2 2 0 1 0 0 4h4a2 2 0 1 1 0 4H8" /><path d="M12 18V6" />
+      </svg>
+      solomon
+    </div>
+    <footer class="invisible md:visible text-sm">
+      Personal Finance &copy; solomon
+    </footer>
+  </div>
+  <div class="bg-black-900 relative flex flex-col md:items-center justify-center">
+    <.flash_group flash={@flash} />
+    <%= @inner_content %>
+  </div>
+</div>

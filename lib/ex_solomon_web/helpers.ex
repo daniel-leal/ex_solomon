@@ -24,8 +24,24 @@ defmodule ExSolomonWeb.Helpers do
     Money.to_decimal(value)
   end
 
-  def normalize_money(value) when is_integer(value) do
-    Decimal.new(value)
+  def normalize_money(value) when is_bitstring(value) do
+    case Float.parse(value) do
+      {float_value, _} ->
+        float_value
+        |> to_string()
+        |> Decimal.new()
+
+      :error ->
+        Decimal.new("0.00")
+    end
+
+    {:ok, decimal} = Decimal.cast(value)
+    decimal
+  end
+
+  def normalize_money(value) when is_number(value) do
+    {:ok, decimal} = Decimal.cast(value)
+    decimal
   end
 
   def normalize_money(value) when is_nil(value) do
@@ -45,7 +61,7 @@ defmodule ExSolomonWeb.Helpers do
 
   """
   def local_date(date) when is_nil(date) do
-    nil
+    "-"
   end
 
   def local_date(date) do

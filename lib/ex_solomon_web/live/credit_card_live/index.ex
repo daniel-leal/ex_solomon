@@ -1,5 +1,5 @@
 defmodule ExSolomonWeb.CreditCardLive.Index do
-  use ExSolomonWeb, :live_view
+  use ExSolomonWeb, :live_view_logged
 
   alias ExSolomon.CreditCards
   alias CreditCards.Queries, as: CreditCardsQueries
@@ -17,19 +17,19 @@ defmodule ExSolomonWeb.CreditCardLive.Index do
 
   defp apply_action(socket, :edit, %{"id" => id}) do
     socket
-    |> assign(:page_title, "Edit Credit card")
+    |> assign(:page_title, "Editar Cartão")
     |> assign(:credit_card, CreditCardsQueries.get_credit_card!(id))
   end
 
   defp apply_action(socket, :new, _params) do
     socket
-    |> assign(:page_title, "New Credit card")
+    |> assign(:page_title, "Novo cartão")
     |> assign(:credit_card, %CreditCard{limit: Money.new(000)})
   end
 
   defp apply_action(socket, :index, _params) do
     socket
-    |> assign(:page_title, "Listing Credit cards")
+    |> assign(:page_title, "Cartões de crédito")
     |> assign(:credit_card, nil)
   end
 
