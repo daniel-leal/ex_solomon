@@ -20,7 +20,7 @@ defmodule ExSolomonWeb.CreditCardLive.FormComponent do
         phx-submit="save"
       >
         <.input field={@form[:name]} type="text" label="Nome" />
-        <.input field={@form[:limit]} type="text" type="money" label="Limite" />
+        <.input field={@form[:limit]} type="money" label="Limite" />
         <.input field={@form[:invoice_start_day]} type="number" label="Melhor dia de compra" />
         <:actions>
           <.button phx-disable-with="Salvando...">Salvar</.button>

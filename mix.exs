@@ -56,7 +56,8 @@ defmodule ExSolomon.MixProject do
       {:money, "~> 1.12"},
       {:ex_machina, "~> 2.7.0", only: :test},
       {:timex, "~> 3.0"},
-      {:mox, "~> 1.0", only: :test}
+      {:mox, "~> 1.0", only: :test},
+      {:scrivener_ecto, "~> 2.0"}
     ]
   end
 

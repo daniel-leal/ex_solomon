@@ -45,11 +45,17 @@ defmodule ExSolomon.Transactions.Queries do
 
   ## Examples
 
-      iex> list_transactions()
-      [%Transaction{}, ...]
+      iex> list_transactions(%{page: 1, page_size: 10})
+      %Scrivener.Page{
+        page_number: 1,
+        page_size: 10,
+        total_entries: 300,
+        total_pages: 30,
+        entries: [%Transaction{}, ...]
+      }
 
   """
-  def list_transactions do
+  def list_transactions(paginate_params \\ []) do
     fixed_transactions = fixed_transactions_query()
 
     union_query =
@@ -61,7 +67,7 @@ defmodule ExSolomon.Transactions.Queries do
       from s in subquery(union_query),
         order_by: [desc_nulls_last: s.date, asc: s.recurring_day]
 
-    Repo.all(query)
+    Repo.paginate(query, paginate_params)
   end
 
   @doc """
