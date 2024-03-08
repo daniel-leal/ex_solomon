@@ -132,11 +132,7 @@ defmodule ExSolomonWeb.CoreComponents do
         <%= @title %>
       </p>
       <p class="mt-2 text-sm leading-5"><%= msg %></p>
-      <button
-        type="button"
-        class="group absolute top-1 right-1 p-2"
-        aria-label={gettext("close")}
-      >
+      <button type="button" class="group absolute top-1 right-1 p-2" aria-label={gettext("close")}>
         <.icon name="hero-x-mark-solid" class="h-5 w-5 opacity-40 group-hover:opacity-70" />
       </button>
     </div>
@@ -166,8 +162,7 @@ defmodule ExSolomonWeb.CoreComponents do
         phx-connected={hide("#client-error")}
         hidden
       >
-        Attempting to reconnect
-        <.icon name="hero-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
+        Attempting to reconnect <.icon name="hero-arrow-path" class="ml-1 h-3 w-3 animate-spin" />
       </.flash>
 
       <.flash
@@ -205,8 +200,7 @@ defmodule ExSolomonWeb.CoreComponents do
     doc: "the server side parameter to collect all input under"
 
   attr :rest, :global,
-    include:
-      ~w(autocomplete name rel action enctype method novalidate target multipart x-data),
+    include: ~w(autocomplete name rel action enctype method novalidate target multipart x-data),
     doc: "the arbitrary HTML attributes to apply to the form tag"
 
   slot :inner_block, required: true
@@ -297,14 +291,12 @@ defmodule ExSolomonWeb.CoreComponents do
   attr :checked, :boolean, doc: "the checked flag for checkbox inputs"
   attr :prompt, :string, default: nil, doc: "the prompt for select inputs"
 
-  attr :options, :list,
-    doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
+  attr :options, :list, doc: "the options to pass to Phoenix.HTML.Form.options_for_select/2"
 
   attr :multiple, :boolean, default: false, doc: "the multiple flag for select inputs"
 
   attr :rest, :global,
-    include:
-      ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
+    include: ~w(accept autocomplete capture cols disabled form list max maxlength min minlength
                 multiple pattern placeholder readonly required rows size step x-model)
 
   slot :inner_block
@@ -535,7 +527,7 @@ defmodule ExSolomonWeb.CoreComponents do
     ~H"""
     <div class="relative overflow-x-auto mt-10 shadow-md sm:rounded-lg">
       <table class="w-full text-sm  rtl:text-right text-left text-zinc-500 dark:text-zinc-400">
-        <thead class="text-xs text-zinc-700 uppercase bg-zinc-50 dark:bg-zinc-700 dark:text-zinc-400">
+        <thead class="text-xs text-zinc-700 uppercase bg-zinc-200 dark:bg-zinc-700 dark:text-zinc-400">
           <tr>
             <th
               :for={col <- @col}
@@ -692,8 +684,7 @@ defmodule ExSolomonWeb.CoreComponents do
     |> JS.show(to: "##{id}")
     |> JS.show(
       to: "##{id}-bg",
-      transition:
-        {"transition-all transform ease-out duration-300", "opacity-0", "opacity-100"}
+      transition: {"transition-all transform ease-out duration-300", "opacity-0", "opacity-100"}
     )
     |> show("##{id}-container")
     |> JS.add_class("overflow-hidden", to: "body")
@@ -704,8 +695,7 @@ defmodule ExSolomonWeb.CoreComponents do
     js
     |> JS.hide(
       to: "##{id}-bg",
-      transition:
-        {"transition-all transform ease-in duration-200", "opacity-100", "opacity-0"}
+      transition: {"transition-all transform ease-in duration-200", "opacity-100", "opacity-0"}
     )
     |> hide("##{id}-container")
     |> JS.hide(to: "##{id}", transition: {"block", "block", "hidden"})

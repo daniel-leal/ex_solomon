@@ -69,6 +69,13 @@
   </:action>
 </.table>
 
+<.page_navigation
+  total_pages={@total_pages}
+  page_number={@page_number}
+  page_size={@page_size}
+  total_entries={@total_entries}
+/>
+
 <.modal
   :if={@live_action in [:new]}
   id="transaction-modal"
