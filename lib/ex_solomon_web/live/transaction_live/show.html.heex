@@ -3,7 +3,7 @@
     <div x-data={"{ is_revenue: #{@transaction.is_revenue} }"}>
       <span
         class="flex flex-row items-center"
-        x-bind:class="is_revenue ? 'text-emerald-600 dark:test-emerald-400' : 'text-red-600 dark:text-red-500'"
+        x-bind:class="is_revenue ? 'text-emerald-600 dark:text-emerald-400' : 'text-red-600 dark:text-red-500'"
       >
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -24,7 +24,7 @@
   </.header>
 
   <.list>
-    <:item title="Valor"><%= @transaction.amount %></:item>
+    <:item title="Categoria"><%= @transaction.category.description %></:item>
     <:item :if={!@transaction.is_fixed} title="Data">
       <%= local_date(@transaction.date) %>
     </:item>
@@ -34,6 +34,7 @@
     <:item title="Tipo">
       <%= TransactionTypes.get_description(@transaction.kind) %>
     </:item>
+    <:item title="Valor"><%= @transaction.amount %></:item>
   </.list>
 
   <div class="mt-16">

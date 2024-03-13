@@ -15,7 +15,11 @@ defmodule ExSolomonWeb.Buttons do
     <button
       id={@id}
       data-dropdown-toggle="dropdown"
-      class="text-white font-semibold bg-emerald-600 hover:bg-emerald-700 focus:ring-4 focus:outline-none focus:ring-zinc-300 rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center #{@class}"
+      class={[
+        "text-white font-semibold bg-emerald-600 hover:bg-emerald-700 focus:ring-4",
+        "focus:outline-none focus:ring-zinc-300 rounded-lg text-sm px-5 py-2.5 text-center",
+        "inline-flex items-center #{@class}"
+      ]}
       type="button"
     >
       <%= render_slot(@inner_block) %>

@@ -346,7 +346,7 @@ defmodule ExSolomonWeb.CoreComponents do
         id={@id}
         name={@name}
         class={[
-          "mt-2 block w-full rounded-lg border border-gray-300 text-foreground bg-white shadow-sm p-2.5",
+          "block w-full rounded-lg border border-gray-300 text-foreground bg-white shadow-sm p-2.5",
           "focus:border-emerald-400 focus:ring-emerald-400 sm:text-sm",
           "dark:bg-zinc-800 dark:border-gray-500 dark:focus:ring-emerald-800 dark:focus:ring-4",
           "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-emerald-400 focus:ring-emerald-500"
@@ -386,7 +386,7 @@ defmodule ExSolomonWeb.CoreComponents do
     ~H"""
     <div phx-feedback-for={@name}>
       <.label for={@id}><%= @label %></.label>
-      <div class="relative mt-2 rounded-md shadow-sm">
+      <div class="relative rounded-md shadow-sm">
         <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
           <span class="text-muted-foreground sm:text-sm">R$</span>
         </div>
@@ -399,7 +399,7 @@ defmodule ExSolomonWeb.CoreComponents do
           class={[
             "border border-gray-300 text-foreground text-sm rounded-lg block w-full p-2.5",
             "dark:bg-zinc-800 dark:border-gray-500 dark:focus:ring-emerald-800 dark:focus:ring-4",
-            "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-emerald-400 focus:ring-emerald-400 text-right",
+            "phx-no-feedback:border-zinc-300 phx-no-feedback:focus:border-emerald-400 focus:ring-emerald-500 text-right",
             @errors == [] && "border-zinc-300 focus:border-zinc-400",
             @errors != [] && "border-rose-400 focus:border-rose-400"
           ]}

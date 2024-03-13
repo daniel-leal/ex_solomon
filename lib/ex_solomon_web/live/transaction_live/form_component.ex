@@ -8,10 +8,7 @@ defmodule ExSolomonWeb.TransactionLive.FormComponent do
     ~H"""
     <div>
       <.header>
-        <div :if={!@transaction.is_revenue} class="text-rose-500 dark:text-rose-400">
-          <%= @title %>
-        </div>
-        <div :if={@transaction.is_revenue}>
+        <div x-bind:class={"#{@transaction.is_revenue} || 'text-rose-500 dark:text-rose-400'"}>
           <%= @title %>
         </div>
         <:subtitle>Formulário de gerenciamento de transações.</:subtitle>
