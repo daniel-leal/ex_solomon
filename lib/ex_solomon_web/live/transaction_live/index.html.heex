@@ -1,15 +1,57 @@
 <.header>
   <%= @page_title %>
   <:actions>
-    <.dropdown_button id="dropdownButton">
-      Nova Transação
-      <:dropdown_row label="Receita" action={~p"/transactions/new?is_revenue=true"}>
-        Receita
-      </:dropdown_row>
-      <:dropdown_row label="Despesa" action={~p"/transactions/new"} />
-    </.dropdown_button>
+    <div class="flex items-center">
+      <button
+        type="button"
+        class={[
+          "text-foreground border bg-white border-zinc-300 hover:bg-zinc-100 focus:ring-4 focus:ring-zinc-100",
+          "rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center me-2",
+          "dark:bg-zinc-800 dark:text-white dark:border-zinc-600 dark:hover:bg-zinc-700",
+          "dark:hover:border-zinc-600 dark:focus:ring-zinc-700"
+        ]}
+        phx-click={
+          JS.toggle(
+            to: "#filter-side",
+            in: {"ease-out duration-300", "opacity-0", "opacity-100"},
+            out: {"ease-out duration-300", "opacity-100", "opacity-0"}
+          )
+        }
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          class="mr-2 h-4 w-4"
+        >
+          <polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3" />
+        </svg>
+        Filtros
+      </button>
+      <.dropdown_button id="dropdownButton">
+        Nova Transação
+        <:dropdown_row label="Receita" action={~p"/transactions/new?revenue=true"}>
+          Receita
+        </:dropdown_row>
+        <:dropdown_row label="Despesa" action={~p"/transactions/new"} />
+      </.dropdown_button>
+    </div>
   </:actions>
 </.header>
+
+<section id="filter-side" class="mt-4 hidden">
+  <.live_component
+    id="filters"
+    module={ExSolomonWeb.TransactionLive.FilterComponent}
+    filters={@filters}
+    transaction_kinds={@transaction_kinds}
+    categories={@categories}
+  />
+</section>
 
 <.table
   id="transactions"
@@ -25,16 +67,19 @@
     </div>
   </:col>
 
-  <:col :let={{_id, transaction}} label="Recorrente">
-    <div :if={transaction.is_fixed}>
-      <input type="checkbox" value="" class="sr-only peer" checked disabled />
-      <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-600">
-      </div>
-    </div>
+  <:col :let={{_id, transaction}} label="Categoria">
+    <%= transaction.category.description %>
+  </:col>
 
-    <div :if={!transaction.is_fixed}>
-      <div class="relative w-11 h-6 bg-gray-200 rounded-full peer dark:bg-zinc-400 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-emerald-600">
-      </div>
+  <:col :let={{_id, transaction}} label="Recorrente" header_class="text-center">
+    <div x-data={"{ is_fixed: #{transaction.is_fixed} }"} class="text-center">
+      <input
+        disabled
+        x-bind:checked="is_fixed"
+        id="disabled-checked-checkbox"
+        type="checkbox"
+        class="w-4 h-4 text-emerald-600 bg-zinc-100 border-zinc-300 rounded focus:ring-emerald-500 dark:focus:ring-emerald-600 dark:ring-offset-zinc-800 focus:ring-2 dark:bg-zinc-700 dark:border-zinc-600"
+      />
     </div>
   </:col>
 

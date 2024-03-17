@@ -45,17 +45,11 @@ defmodule ExSolomon.Transactions.Queries do
 
   ## Examples
 
-      iex> list_transactions(%{page: 1, page_size: 10})
-      %Scrivener.Page{
-        page_number: 1,
-        page_size: 10,
-        total_entries: 300,
-        total_pages: 30,
-        entries: [%Transaction{}, ...]
-      }
+      iex> list_transactions()
+      [%Transaction{}...]
 
   """
-  def list_transactions(paginate_params \\ []) do
+  def list_transactions() do
     fixed_transactions = fixed_transactions_query()
 
     union_query =
@@ -63,11 +57,10 @@ defmodule ExSolomon.Transactions.Queries do
         where: not q.is_fixed,
         union: ^fixed_transactions
 
-    query =
-      from s in subquery(union_query),
-        order_by: [desc_nulls_last: s.date, asc: s.recurring_day]
-
-    Repo.paginate(query, paginate_params)
+    from s in subquery(union_query),
+      join: c in assoc(s, :category),
+      order_by: [desc_nulls_last: s.date, asc: s.recurring_day],
+      preload: [:category]
   end
 
   @doc """
@@ -84,5 +77,9 @@ defmodule ExSolomon.Transactions.Queries do
       ** (Ecto.NoResultsError)
 
   """
-  def get_transaction!(id), do: Repo.get!(Transaction, id)
+  def get_transaction!(id) do
+    Transaction
+    |> Repo.get!(id)
+    |> Repo.preload(:category)
+  end
 end
