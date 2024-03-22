@@ -19,6 +19,7 @@ defmodule ExSolomonWeb.CreditCardLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
+        <.input field={@form[:user_id]} type="hidden" />
         <.input field={@form[:name]} type="text" label="Nome" />
         <.input field={@form[:limit]} type="money" label="Limite" />
         <.input field={@form[:invoice_start_day]} type="number" label="Melhor dia de compra" />

@@ -5,6 +5,7 @@ defmodule ExSolomonWeb.TransactionLive.Index do
 
   alias ExSolomon.Filter
   alias ExSolomon.Repo
+  alias ExSolomon.CreditCards.Queries, as: CreditCardQueries
   alias ExSolomon.Transactions
   alias ExSolomon.Transactions.Schemas.Transaction
   alias ExSolomon.Transactions.Queries, as: TransactionQueries
@@ -13,13 +14,15 @@ defmodule ExSolomonWeb.TransactionLive.Index do
   import ExSolomonWeb.{Buttons, Pagination}
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(_params, _session, %{assigns: %{current_user: current_user}} = socket) do
     categories = TransactionQueries.list_categories()
+    credit_cards = CreditCardQueries.list_credit_cards(current_user.id)
     transaction_kinds = TransactionTypes.kinds()
 
     socket =
       socket
       |> assign(:categories, categories)
+      |> assign(:credit_cards, credit_cards)
       |> assign(:transaction_kinds, transaction_kinds)
 
     {:ok, socket}
@@ -61,91 +64,40 @@ defmodule ExSolomonWeb.TransactionLive.Index do
   @impl true
   def handle_info(
         {ExSolomonWeb.TransactionLive.FormComponent, {:saved, _transaction}},
-        %{
-          assigns: %{
-            page_number: page_number,
-            page_size: page_size
-          }
-        } = socket
+        socket
       ) do
-    {:noreply, apply_pagination(socket, %{page_size: page_size, page_number: page_number})}
+    reload_with_params(socket)
   end
 
   @impl true
   def handle_info(
         {ExSolomonWeb.TransactionLive.FilterComponent, {:filtered, filters}},
-        %{
-          assigns: %{
-            page_number: page_number,
-            page_size: page_size
-          }
-        } = socket
+        socket
       ) do
-    IO.inspect(filters)
-
-    query_params =
-      %{page_size: page_size}
-      |> Map.merge(%{page_number: page_number})
-      |> Map.merge(filters)
-      |> URI.encode_query()
-
-    socket = apply_pagination(socket, %{"page_number" => page_number, "page_size" => page_size})
-
-    {:noreply, push_navigate(socket, to: "/transactions?#{query_params}")}
+    socket
+    |> assign(:filters, filters)
+    |> reload_with_params()
   end
 
   @impl true
-  def handle_event(
-        "nav",
-        %{"page" => page},
-        %{
-          assigns: %{
-            page_size: page_size,
-            filters: filters
-          }
-        } = socket
-      ) do
-    query_params =
-      %{page: page}
-      |> Map.merge(%{page_size: page_size})
-      |> Map.merge(filters)
-      |> URI.encode_query()
-
-    {:noreply, push_navigate(socket, to: "/transactions?#{query_params}")}
+  def handle_event("nav", %{"page" => page}, socket) do
+    socket
+    |> assign(page: page)
+    |> reload_with_params()
   end
 
   @impl true
-  def handle_event(
-        "change_page_size",
-        %{"page_size" => page_size},
-        %{
-          assigns: %{
-            page_number: page_number,
-            filters: filters
-          }
-        } = socket
-      ) do
-    query_params =
-      %{page_size: page_size}
-      |> Map.merge(%{page: page_number})
-      |> Map.merge(filters)
-      |> URI.encode_query()
-
-    {:noreply, push_navigate(socket, to: "/transactions?#{query_params}")}
+  def handle_event("change_page_size", %{"page_size" => page_size}, socket) do
+    socket
+    |> assign(page_size: page_size)
+    |> reload_with_params()
   end
 
   @impl true
   def handle_event("delete", %{"id" => id}, socket) do
     transaction = Transactions.Queries.get_transaction!(id)
     {:ok, _} = Transactions.delete_transaction(transaction)
-    assigns = Map.get(socket, :assigns)
-
-    page_number = Map.get(assigns, :page_number)
-    page_size = Map.get(assigns, :page_size)
-
-    params = %{page_size: page_size, page_number: page_number}
-
-    {:noreply, apply_pagination(socket, params)}
+    reload_with_params(socket)
   end
 
   defp apply_filters(socket, params) do
@@ -153,7 +105,8 @@ defmodule ExSolomonWeb.TransactionLive.Index do
       kind: Map.get(params, "kind"),
       is_fixed: Map.get(params, "is_fixed"),
       is_revenue: Map.get(params, "is_revenue"),
-      category_id: Map.get(params, "category_id")
+      category_id: Map.get(params, "category_id"),
+      credit_card_id: Map.get(params, "credit_card_id")
     })
   end
 
@@ -173,9 +126,32 @@ defmodule ExSolomonWeb.TransactionLive.Index do
 
     socket
     |> assign(:page_size, page_size)
-    |> assign(:page_number, page_number)
+    |> assign(:page, page_number)
     |> assign(:total_entries, total_entries)
     |> assign(:total_pages, total_pages)
     |> stream(:transactions, entries)
+  end
+
+  defp reload_with_params(
+         %{
+           assigns: %{
+             page: page,
+             page_size: page_size,
+             filters: filters
+           }
+         } = socket
+       ) do
+    query_params =
+      %{page_size: page_size}
+      |> Map.merge(%{page: page})
+      |> Map.merge(filters)
+      |> URI.encode_query()
+
+    socket =
+      socket
+      |> apply_filters(filters)
+      |> apply_pagination(%{"page" => page, "page_size" => page_size})
+
+    {:noreply, push_navigate(socket, to: "/transactions?#{query_params}")}
   end
 end

@@ -5,16 +5,17 @@ defmodule ExSolomon.CreditCards.Queries do
   import Ecto.Query, warn: false
 
   @doc """
-  Returns the list of credit_cards.
+  Returns the list of credit_cards of a specific user.
 
   ## Examples
 
-      iex> list_credit_cards()
+      iex> list_credit_cards(user)
       [%CreditCard{}, ...]
 
   """
-  def list_credit_cards do
-    Repo.all(CreditCard)
+  def list_credit_cards(user_id) do
+    query = from c in CreditCard, where: c.user_id == ^user_id
+    Repo.all(query)
   end
 
   @doc """

@@ -6,8 +6,8 @@ defmodule ExSolomonWeb.CreditCardLive.Index do
   alias ExSolomon.CreditCards.Schemas.CreditCard
 
   @impl true
-  def mount(_params, _session, socket) do
-    {:ok, stream(socket, :credit_cards, CreditCardsQueries.list_credit_cards())}
+  def mount(_params, _session, %{assigns: %{current_user: current_user}} = socket) do
+    {:ok, stream(socket, :credit_cards, CreditCardsQueries.list_credit_cards(current_user.id))}
   end
 
   @impl true
@@ -21,10 +21,10 @@ defmodule ExSolomonWeb.CreditCardLive.Index do
     |> assign(:credit_card, CreditCardsQueries.get_credit_card!(id))
   end
 
-  defp apply_action(socket, :new, _params) do
+  defp apply_action(%{assigns: %{current_user: current_user}} = socket, :new, _params) do
     socket
     |> assign(:page_title, "Novo cartão")
-    |> assign(:credit_card, %CreditCard{limit: Money.new(000)})
+    |> assign(:credit_card, %CreditCard{limit: Money.new(000), user_id: current_user.id})
   end
 
   defp apply_action(socket, :index, _params) do

@@ -34,6 +34,9 @@
     <:item title="Tipo">
       <%= TransactionTypes.get_description(@transaction.kind) %>
     </:item>
+    <:item :if={@transaction.kind == "credit"} title="Cartão de Crédito">
+      <%= @transaction.credit_card.name %>
+    </:item>
     <:item title="Valor"><%= @transaction.amount %></:item>
   </.list>
 

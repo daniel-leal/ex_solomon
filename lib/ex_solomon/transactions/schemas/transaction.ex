@@ -50,31 +50,41 @@ defmodule ExSolomon.Transactions.Schemas.Transaction do
       :category_id
     ])
     |> validate_inclusion(:kind, Enum.map(TransactionTypes.kinds(), & &1.value))
-    |> validate_date_required()
-    |> validate_recurring_day_required()
+    |> validate_recurrency()
     |> validate_number(:recurring_day, less_than: 29)
+    |> validate_credit_card_required()
   end
 
-  defp validate_date_required(changeset) do
+  defp validate_recurrency(changeset) do
     is_fixed = get_field(changeset, :is_fixed)
     date = get_field(changeset, :date)
+    recurring_day = get_field(changeset, :recurring_day)
 
-    case {is_fixed, date} do
-      {false, nil} ->
+    case {is_fixed, date, recurring_day} do
+      {false, nil, _} ->
         add_error(changeset, :date, "can't be blank")
+
+      {true, _, nil} ->
+        add_error(changeset, :recurring_day, "can't be blank")
+
+      {false, _, _} ->
+        put_change(changeset, :recurring_day, nil)
+
+      {true, _, _} ->
+        put_change(changeset, :date, nil)
 
       _ ->
         changeset
     end
   end
 
-  defp validate_recurring_day_required(changeset) do
-    is_fixed = get_field(changeset, :is_fixed)
-    recurring_day = get_field(changeset, :recurring_day)
+  defp validate_credit_card_required(changeset) do
+    kind = get_field(changeset, :kind)
+    credit_card_id = get_field(changeset, :credit_card_id)
 
-    case {is_fixed, recurring_day} do
-      {true, nil} ->
-        add_error(changeset, :recurring_day, "can't be blank")
+    case {kind, credit_card_id} do
+      {"credit", nil} ->
+        add_error(changeset, :credit_card_id, "can't be blank")
 
       _ ->
         changeset
