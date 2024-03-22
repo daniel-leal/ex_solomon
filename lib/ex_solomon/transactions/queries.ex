@@ -81,5 +81,6 @@ defmodule ExSolomon.Transactions.Queries do
     Transaction
     |> Repo.get!(id)
     |> Repo.preload(:category)
+    |> Repo.preload(:credit_card)
   end
 end

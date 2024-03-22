@@ -21,8 +21,8 @@ defmodule ExSolomon.CreditCards.Schemas.CreditCard do
   @doc false
   def changeset(credit_card, attrs) do
     credit_card
-    |> cast(attrs, [:name, :limit, :invoice_start_day])
-    |> validate_required([:name, :limit, :invoice_start_day])
+    |> cast(attrs, [:name, :limit, :invoice_start_day, :user_id])
+    |> validate_required([:name, :limit, :invoice_start_day, :user_id])
     |> validate_number(:invoice_start_day, less_than: 32)
   end
 

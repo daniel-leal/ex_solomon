@@ -7,7 +7,7 @@ defmodule ExSolomonWeb.TransactionLive.FilterComponent do
     ~H"""
     <div>
       <.simple_form for={@form} phx-target={@myself} phx-submit="filter">
-        <div class="grid grid-cols-5 gap-4">
+        <div class="grid grid-cols-6 gap-4">
           <.input
             field={@form[:kind]}
             type="select"
@@ -40,12 +40,20 @@ defmodule ExSolomonWeb.TransactionLive.FilterComponent do
             options={Enum.map(@categories, &{&1.description, &1.id})}
           />
 
-          <div class="flex flex-row justify-center items-end gap-2 w-full">
+          <.input
+            field={@form[:credit_card_id]}
+            type="select"
+            label="Cartão de crédito"
+            prompt="selecione o cartão de crédito"
+            options={Enum.map(@credit_cards, &{&1.name, &1.id})}
+          />
+
+          <div class="flex flex-row justify-center items-end gap-4 w-full">
             <button
               type="submit"
               class={[
                 "flex flex-row items-center justify-center text-white w-full text-sm font-medium rounded-lg",
-                "py-3 bg-violet-700 hover:bg-violet-800 focus:ring-4 focus:ring-violet-300",
+                "py-2.5 bg-violet-700 hover:bg-violet-800 focus:ring-4 focus:ring-violet-300",
                 "dark:bg-violet-600 dark:hover:bg-violet-700 focus:outline-none dark:focus:ring-violet-800 "
               ]}
             >
@@ -66,7 +74,7 @@ defmodule ExSolomonWeb.TransactionLive.FilterComponent do
             <button
               type="button"
               class={[
-                "flex flex-row items-center justify-center w-full py-3 focus:outline-none font-medium rounded-lg text-sm",
+                "flex flex-row items-center justify-center w-full py-2.5 focus:outline-none font-medium rounded-lg text-sm",
                 "text-gray-900",
                 "bg-white border border-zinc-300 hover:bg-zinc-100 focus:ring-4 focus:ring-zinc-100",
                 "dark:bg-zinc-800 dark:text-white dark:border-zinc-600 dark:hover:bg-zinc-700",

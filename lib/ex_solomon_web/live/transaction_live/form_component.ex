@@ -59,7 +59,18 @@ defmodule ExSolomonWeb.TransactionLive.FormComponent do
               label="Tipo"
               prompt="Selecione o tipo"
               options={Enum.map(@transaction_kinds, &{&1.description, &1.value})}
+              x-model="kind"
             />
+
+            <div x-show="kind == 'credit'">
+              <.input
+                field={@form[:credit_card_id]}
+                type="select"
+                label="Cartão de crédito"
+                prompt="Selecione o cartão"
+                options={Enum.map(@credit_cards, &{&1.name, &1.id})}
+              />
+            </div>
           </div>
         </div>
 
@@ -119,7 +130,9 @@ defmodule ExSolomonWeb.TransactionLive.FormComponent do
   end
 
   defp initialize_alpine(socket, %Ecto.Changeset{} = changeset) do
-    alpine_data = "{ is_fixed: #{changeset.data.is_fixed} }"
+    IO.inspect(changeset)
+
+    alpine_data = "{ is_fixed: #{changeset.data.is_fixed}, kind: '#{changeset.data.kind}' }"
     assign(socket, :initialize_alpine, alpine_data)
   end
 

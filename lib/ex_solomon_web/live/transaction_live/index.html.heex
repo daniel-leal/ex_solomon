@@ -50,6 +50,7 @@
     filters={@filters}
     transaction_kinds={@transaction_kinds}
     categories={@categories}
+    credit_cards={@credit_cards}
   />
 </section>
 
@@ -116,7 +117,7 @@
 
 <.page_navigation
   total_pages={@total_pages}
-  page_number={@page_number}
+  page_number={@page}
   page_size={@page_size}
   total_entries={@total_entries}
 />
@@ -134,6 +135,7 @@
     action={@live_action}
     transaction={@transaction}
     categories={@categories}
+    credit_cards={@credit_cards}
     transaction_kinds={@transaction_kinds}
     patch={~p"/transactions"}
   />
