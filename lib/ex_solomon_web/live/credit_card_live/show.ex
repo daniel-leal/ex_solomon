@@ -1,9 +1,8 @@
 defmodule ExSolomonWeb.CreditCardLive.Show do
   use ExSolomonWeb, :live_view_logged
 
-  alias ExSolomon.CreditCards
+  alias ExSolomon.CreditCards.Queries, as: CreditCardsQueries
   alias ExSolomon.CreditCards.Schemas.CreditCard
-  alias CreditCards.Queries, as: CreditCardsQueries
 
   @impl true
   def mount(_params, _session, socket) do

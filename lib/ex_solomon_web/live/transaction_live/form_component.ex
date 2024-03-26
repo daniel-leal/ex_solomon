@@ -130,8 +130,6 @@ defmodule ExSolomonWeb.TransactionLive.FormComponent do
   end
 
   defp initialize_alpine(socket, %Ecto.Changeset{} = changeset) do
-    IO.inspect(changeset)
-
     alpine_data = "{ is_fixed: #{changeset.data.is_fixed}, kind: '#{changeset.data.kind}' }"
     assign(socket, :initialize_alpine, alpine_data)
   end

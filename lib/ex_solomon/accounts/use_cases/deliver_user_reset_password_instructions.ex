@@ -1,5 +1,5 @@
 defmodule ExSolomon.Accounts.UseCases.DeliverUserResetPasswordInstructions do
-  alias ExSolomon.Accounts.Schemas.{User, UserToken, UserNotifier}
+  alias ExSolomon.Accounts.Schemas.{User, UserNotifier, UserToken}
   alias ExSolomon.Repo
 
   @doc ~S"""

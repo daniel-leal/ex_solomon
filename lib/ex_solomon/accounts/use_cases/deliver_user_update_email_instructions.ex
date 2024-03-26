@@ -1,5 +1,5 @@
 defmodule ExSolomon.Accounts.UseCases.DeliverUserUpdateEmailInstructions do
-  alias ExSolomon.Accounts.Schemas.{User, UserToken, UserNotifier}
+  alias ExSolomon.Accounts.Schemas.{User, UserNotifier, UserToken}
   alias ExSolomon.Repo
 
   @doc ~S"""
@@ -13,8 +13,7 @@ defmodule ExSolomon.Accounts.UseCases.DeliverUserUpdateEmailInstructions do
   """
   def execute(%User{} = user, current_email, update_email_url_fun)
       when is_function(update_email_url_fun, 1) do
-    {encoded_token, user_token} =
-      UserToken.build_email_token(user, "change:#{current_email}")
+    {encoded_token, user_token} = UserToken.build_email_token(user, "change:#{current_email}")
 
     Repo.insert!(user_token)
 

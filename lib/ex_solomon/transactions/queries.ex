@@ -1,6 +1,6 @@
 defmodule ExSolomon.Transactions.Queries do
-  alias ExSolomon.Transactions.Schemas.{Category, Transaction}
   alias ExSolomon.Repo
+  alias ExSolomon.Transactions.Schemas.{Category, Transaction}
 
   import Ecto.Query, warn: false
 
@@ -49,7 +49,7 @@ defmodule ExSolomon.Transactions.Queries do
       [%Transaction{}...]
 
   """
-  def list_transactions() do
+  def list_transactions do
     fixed_transactions = fixed_transactions_query()
 
     union_query =

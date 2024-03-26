@@ -2,7 +2,7 @@ defmodule ExSolomonWeb.CreditCardLive.Index do
   use ExSolomonWeb, :live_view_logged
 
   alias ExSolomon.CreditCards
-  alias CreditCards.Queries, as: CreditCardsQueries
+  alias ExSolomon.CreditCards.Queries, as: CreditCardsQueries
   alias ExSolomon.CreditCards.Schemas.CreditCard
 
   @impl true

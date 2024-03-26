@@ -2,11 +2,11 @@ defmodule ExSolomon.AccountsTest do
   use ExSolomon.DataCase
 
   alias ExSolomon.Accounts
-  alias Accounts.Schemas.{User, UserToken}
-  alias Accounts.Queries, as: AccountsQueries
+  alias ExSolomon.Accounts.Queries, as: AccountsQueries
+  alias ExSolomon.Schemas.{User, UserToken}
+  alias ExSolomon.Accounts.Schemas.{User, UserToken}
 
   import ExSolomon.AccountsFixtures
-  alias ExSolomon.Accounts.Schemas.{User, UserToken}
 
   describe "get_user_by_email/1" do
     test "does not return the user if the email does not exist" do
@@ -67,8 +67,7 @@ defmodule ExSolomon.AccountsTest do
     end
 
     test "validates email and password when given" do
-      {:error, changeset} =
-        Accounts.register_user(%{email: "not valid", password: "not valid"})
+      {:error, changeset} = Accounts.register_user(%{email: "not valid", password: "not valid"})
 
       assert %{
                email: ["must have the @ sign and no spaces"],
@@ -178,8 +177,7 @@ defmodule ExSolomon.AccountsTest do
     test "applies the email without persisting it", %{user: user} do
       email = unique_user_email()
 
-      {:ok, user} =
-        Accounts.apply_user_email(user, valid_user_password(), %{email: email})
+      {:ok, user} = Accounts.apply_user_email(user, valid_user_password(), %{email: email})
 
       assert user.email == email
       assert AccountsQueries.get_user!(user.id).email != email
@@ -514,8 +512,7 @@ defmodule ExSolomon.AccountsTest do
     end
 
     test "updates the password", %{user: user} do
-      {:ok, updated_user} =
-        Accounts.reset_user_password(user, %{password: "new valid password"})
+      {:ok, updated_user} = Accounts.reset_user_password(user, %{password: "new valid password"})
 
       assert is_nil(updated_user.password)
 

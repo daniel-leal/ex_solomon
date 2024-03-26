@@ -5,7 +5,7 @@ defmodule ExSolomonWeb.UserAuth do
   import Phoenix.Controller
 
   alias ExSolomon.Accounts
-  alias Accounts.Queries, as: AccountsQueries
+  alias ExSolomon.Accounts.Queries, as: AccountsQueries
 
   # Make the remember me cookie valid for 60 days.
   # If you want bump or reduce this value, also change

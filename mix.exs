@@ -19,7 +19,7 @@ defmodule ExSolomon.MixProject do
   def application do
     [
       mod: {ExSolomon.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :bunt]
     ]
   end
 
@@ -52,12 +52,12 @@ defmodule ExSolomon.MixProject do
       {:jason, "~> 1.2"},
       {:dns_cluster, "~> 0.1.1"},
       {:plug_cowboy, "~> 2.5"},
-      {:credo, "~> 1.7", only: [:dev, :test], runtime: false},
       {:money, "~> 1.12"},
       {:ex_machina, "~> 2.7.0", only: :test},
       {:timex, "~> 3.0"},
-      {:mox, "~> 1.0", only: :test},
-      {:scrivener_ecto, "~> 2.0"}
+      {:mock, "~> 0.3.0", only: :test},
+      {:scrivener_ecto, "~> 2.0"},
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
     ]
   end
 

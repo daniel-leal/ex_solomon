@@ -3,12 +3,12 @@ defmodule ExSolomonWeb.TransactionLive.Index do
 
   alias Phoenix.LiveView.JS
 
+  alias ExSolomon.CreditCards.Queries, as: CreditCardQueries
   alias ExSolomon.Filter
   alias ExSolomon.Repo
-  alias ExSolomon.CreditCards.Queries, as: CreditCardQueries
   alias ExSolomon.Transactions
-  alias ExSolomon.Transactions.Schemas.Transaction
   alias ExSolomon.Transactions.Queries, as: TransactionQueries
+  alias ExSolomon.Transactions.Schemas.Transaction
   alias ExSolomon.Transactions.Types.TransactionTypes
 
   import ExSolomonWeb.{Buttons, Pagination}

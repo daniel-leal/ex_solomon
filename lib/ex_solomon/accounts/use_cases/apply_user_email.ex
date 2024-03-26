@@ -1,6 +1,6 @@
 defmodule ExSolomon.Accounts.UseCases.ApplyUserEmail do
-  alias ExSolomon.Accounts.Schemas.User
   alias Ecto
+  alias ExSolomon.Accounts.Schemas.User
 
   @doc """
   Emulates that the email will change without actually changing

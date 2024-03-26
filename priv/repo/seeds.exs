@@ -1,6 +1,6 @@
 alias ExSolomon.Transactions.Schemas.Category
 
-Insert categories
+# Insert categories
 categories = [
   %Category{description: "Alimentação"},
   %Category{description: "Moradia"},

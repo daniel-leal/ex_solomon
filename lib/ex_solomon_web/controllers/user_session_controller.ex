@@ -1,8 +1,7 @@
 defmodule ExSolomonWeb.UserSessionController do
   use ExSolomonWeb, :controller
 
-  alias ExSolomon.Accounts
-  alias Accounts.Queries, as: AccountsQueries
+  alias ExSolomon.Accounts.Queries, as: AccountsQueries
   alias ExSolomonWeb.UserAuth
 
   def create(conn, %{"_action" => "registered"} = params) do

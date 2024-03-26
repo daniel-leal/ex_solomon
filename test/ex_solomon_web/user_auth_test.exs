@@ -1,10 +1,11 @@
 defmodule ExSolomonWeb.UserAuthTest do
   use ExSolomonWeb.ConnCase, async: true
 
-  alias Phoenix.LiveView
   alias ExSolomon.Accounts
-  alias Accounts.Queries, as: AccountsQueries
+  alias ExSolomon.Accounts.Queries, as: AccountsQueries
   alias ExSolomonWeb.UserAuth
+  alias Phoenix.LiveView
+
   import ExSolomon.AccountsFixtures
 
   @remember_me_cookie "_ex_solomon_web_user_remember_me"
@@ -41,13 +42,11 @@ defmodule ExSolomonWeb.UserAuthTest do
     end
 
     test "writes a cookie if remember_me is configured", %{conn: conn, user: user} do
-      conn =
-        conn |> fetch_cookies() |> UserAuth.log_in_user(user, %{"remember_me" => "true"})
+      conn = conn |> fetch_cookies() |> UserAuth.log_in_user(user, %{"remember_me" => "true"})
 
       assert get_session(conn, :user_token) == conn.cookies[@remember_me_cookie]
 
-      assert %{value: signed_token, max_age: max_age} =
-               conn.resp_cookies[@remember_me_cookie]
+      assert %{value: signed_token, max_age: max_age} = conn.resp_cookies[@remember_me_cookie]
 
       assert signed_token != get_session(conn, :user_token)
       assert max_age == 5_184_000
@@ -98,8 +97,7 @@ defmodule ExSolomonWeb.UserAuthTest do
     test "authenticates user from session", %{conn: conn, user: user} do
       user_token = Accounts.generate_user_session_token(user)
 
-      conn =
-        conn |> put_session(:user_token, user_token) |> UserAuth.fetch_current_user([])
+      conn = conn |> put_session(:user_token, user_token) |> UserAuth.fetch_current_user([])
 
       assert conn.assigns.current_user.id == user.id
     end
@@ -187,8 +185,7 @@ defmodule ExSolomonWeb.UserAuthTest do
         assigns: %{__changed__: %{}, flash: %{}}
       }
 
-      {:halt, updated_socket} =
-        UserAuth.on_mount(:ensure_authenticated, %{}, session, socket)
+      {:halt, updated_socket} = UserAuth.on_mount(:ensure_authenticated, %{}, session, socket)
 
       assert updated_socket.assigns.current_user == nil
     end
@@ -201,8 +198,7 @@ defmodule ExSolomonWeb.UserAuthTest do
         assigns: %{__changed__: %{}, flash: %{}}
       }
 
-      {:halt, updated_socket} =
-        UserAuth.on_mount(:ensure_authenticated, %{}, session, socket)
+      {:halt, updated_socket} = UserAuth.on_mount(:ensure_authenticated, %{}, session, socket)
 
       assert updated_socket.assigns.current_user == nil
     end
@@ -291,8 +287,7 @@ defmodule ExSolomonWeb.UserAuthTest do
     end
 
     test "does not redirect if user is authenticated", %{conn: conn, user: user} do
-      conn =
-        conn |> assign(:current_user, user) |> UserAuth.require_authenticated_user([])
+      conn = conn |> assign(:current_user, user) |> UserAuth.require_authenticated_user([])
 
       refute conn.halted
       refute conn.status

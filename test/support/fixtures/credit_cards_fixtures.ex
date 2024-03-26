@@ -9,7 +9,7 @@ defmodule ExSolomon.CreditCardsFixtures do
   @doc """
   Generate a credit_card.
   """
-  def credit_card_fixture() do
+  def credit_card_fixture do
     insert(:credit_card)
   end
 end

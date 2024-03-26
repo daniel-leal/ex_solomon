@@ -49,12 +49,7 @@ defmodule ExSolomonWeb.UserLive.Settings do
             id="hidden_user_email"
             value={@current_email}
           />
-          <.input
-            field={@password_form[:password]}
-            type="password"
-            label="New password"
-            required
-          />
+          <.input field={@password_form[:password]} type="password" label="New password" required />
           <.input
             field={@password_form[:password_confirmation]}
             type="password"
@@ -117,8 +112,7 @@ defmodule ExSolomonWeb.UserLive.Settings do
       |> Map.put(:action, :validate)
       |> to_form()
 
-    {:noreply,
-     assign(socket, email_form: email_form, email_form_current_password: password)}
+    {:noreply, assign(socket, email_form: email_form, email_form_current_password: password)}
   end
 
   def handle_event("update_email", params, socket) do
@@ -135,12 +129,10 @@ defmodule ExSolomonWeb.UserLive.Settings do
 
         info = "A link to confirm your email change has been sent to the new address."
 
-        {:noreply,
-         socket |> put_flash(:info, info) |> assign(email_form_current_password: nil)}
+        {:noreply, socket |> put_flash(:info, info) |> assign(email_form_current_password: nil)}
 
       {:error, changeset} ->
-        {:noreply,
-         assign(socket, :email_form, to_form(Map.put(changeset, :action, :insert)))}
+        {:noreply, assign(socket, :email_form, to_form(Map.put(changeset, :action, :insert)))}
     end
   end
 

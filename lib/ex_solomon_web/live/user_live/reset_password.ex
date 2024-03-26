@@ -2,7 +2,7 @@ defmodule ExSolomonWeb.UserLive.ResetPassword do
   use ExSolomonWeb, :live_view
 
   alias ExSolomon.Accounts
-  alias Accounts.Queries, as: AccountsQueries
+  alias ExSolomon.Accounts.Queries, as: AccountsQueries
 
   def render(assigns) do
     ~H"""

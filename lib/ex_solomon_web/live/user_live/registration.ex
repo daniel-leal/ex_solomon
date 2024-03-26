@@ -2,12 +2,8 @@ defmodule ExSolomonWeb.UserLive.Registration do
   use ExSolomonWeb, :live_view
 
   alias ExSolomon.Accounts
-
-  alias ExSolomon.Accounts.UseCases.{
-    ChangeUserRegistration
-  }
-
   alias ExSolomon.Accounts.Schemas.User
+  alias ExSolomon.Accounts.UseCases.ChangeUserRegistration
 
   def render(assigns) do
     ~H"""

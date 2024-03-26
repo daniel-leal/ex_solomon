@@ -34,30 +34,40 @@ defmodule ExSolomon.TransactionsTest do
 
     test "list_transactions/0 returns all transactions", %{user: user, category: category} do
       fixed_transactions =
-        insert(:transaction,
-          user_id: user.id,
-          category_id: category.id,
-          is_fixed: true,
-          date: nil,
-          recurring_day: 2
+        Repo.preload(
+          insert(:transaction,
+            user_id: user.id,
+            category_id: category.id,
+            is_fixed: true,
+            date: nil,
+            recurring_day: 2
+          ),
+          :category
         )
 
       variable_transactions =
-        insert(:transaction,
-          user_id: user.id,
-          category_id: category.id,
-          is_fixed: false,
-          recurring_day: nil,
-          date: ~D[2024-01-15]
+        Repo.preload(
+          insert(:transaction,
+            user_id: user.id,
+            category_id: category.id,
+            is_fixed: false,
+            recurring_day: nil,
+            date: ~D[2024-01-15]
+          ),
+          :category
         )
 
       transactions = [variable_transactions, fixed_transactions]
 
-      assert Transactions.Queries.list_transactions() == transactions
+      assert Repo.all(Transactions.Queries.list_transactions()) == transactions
     end
 
     test "get_transaction!/1 returns the transaction with given id" do
-      transaction = insert(:transaction)
+      transaction =
+        insert(:transaction)
+        |> Repo.preload(:category)
+        |> Repo.preload(:credit_card)
+
       assert Transactions.Queries.get_transaction!(transaction.id) == transaction
     end
 
@@ -71,8 +81,7 @@ defmodule ExSolomon.TransactionsTest do
           category_id: category.id
         )
 
-      assert {:ok, %Transaction{} = transaction} =
-               Transactions.create_transaction(valid_attrs)
+      assert {:ok, %Transaction{} = transaction} = Transactions.create_transaction(valid_attrs)
 
       assert transaction.date == valid_attrs[:date]
       assert transaction.description == valid_attrs[:description]

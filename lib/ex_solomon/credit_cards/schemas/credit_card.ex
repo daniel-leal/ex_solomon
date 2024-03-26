@@ -1,7 +1,10 @@
 defmodule ExSolomon.CreditCards.Schemas.CreditCard do
-  alias ExSolomon.CreditCards.Schemas.CreditCard
   use Ecto.Schema
+
   import Ecto.Changeset
+
+  alias ExSolomon.CreditCards.Schemas.CreditCard
+  alias ExSolomon.DateUtils
 
   @primary_key {:id, :binary_id, autogenerate: true}
   @foreign_key_type :binary_id
@@ -31,15 +34,15 @@ defmodule ExSolomon.CreditCards.Schemas.CreditCard do
 
   ## Examples
 
-      iex> ExSolomon.CreditCards.Schemas.CreditCard.get_current_invoice(%CreditCard{day: 7})
+      iex> ExSolomon.CreditCards.Schemas.CreditCard.get_current_invoice(%CreditCard{invoice_start_day: 7})
       "07/02/2024 - 06/03/2024"
 
-      iex> ExSolomon.CreditCards.Schemas.CreditCard.get_current_invoice(%CreditCard{day: 29})
+      iex> ExSolomon.CreditCards.Schemas.CreditCard.get_current_invoice(%CreditCard{invoice_start_day: 29})
       "29/01/2024 - 28/02/2024"
 
   """
   def get_current_invoice(%CreditCard{invoice_start_day: day}) do
-    current_date = Timex.now()
+    current_date = DateUtils.utc_now()
     display_format = "%d/%m/%Y"
     formatter = :strftime
 

@@ -1,5 +1,5 @@
 defmodule ExSolomon.Accounts.UseCases.GenerateUserSessionToken do
-  alias ExSolomon.Accounts.Schemas.{UserToken}
+  alias ExSolomon.Accounts.Schemas.UserToken
   alias ExSolomon.Repo
 
   @doc """
