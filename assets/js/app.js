@@ -24,6 +24,10 @@ import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 import "flowbite/dist/flowbite.phoenix.js";
 
+import Datepicker from 'flowbite-datepicker/Datepicker';
+import DateRangePicker from 'flowbite-datepicker/DateRangePicker';
+import DatepickerLocalePT from "flowbite-datepicker/locales/pt-BR";
+
 import darkModeHook from "../vendor/dark_mode";
 
 Alpine.start();
@@ -38,6 +42,22 @@ Hooks.InitAlpine = {
 };
 
 Hooks.DarkThemeToggle = darkModeHook;
+
+Object.assign(Datepicker.locales, DatepickerLocalePT)
+Hooks.DateRangePicker = {
+  mounted() {
+    const datepickerEl = this.el;
+    new DateRangePicker(datepickerEl, {
+      format: "dd/mm/yyyy",
+      language: "pt-BR",
+      todayBtn: true,
+      todayBtnMode: 1,
+    });
+  },
+  updated() {
+    this.mounted();
+  }
+}
 
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")

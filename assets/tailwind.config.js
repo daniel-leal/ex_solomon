@@ -4,6 +4,8 @@
 const fs = require("fs");
 const path = require("path");
 const plugin = require("tailwindcss/plugin");
+const colors = require('tailwindcss/colors')
+
 
 module.exports = {
   darkMode: "class",
@@ -40,6 +42,10 @@ module.exports = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
+        gray: colors.zinc,
+        blue: colors.emerald,
+        red: colors.rose,
+        pink: colors.fuchsia,
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",
@@ -134,7 +140,7 @@ module.exports = {
     // Embeds Heroicons (https://heroicons.com) into your app.css bundle
     // See your `CoreComponents.icon/1` for more information.
     //
-    plugin(function ({ matchComponents, theme }) {
+    plugin(function({ matchComponents, theme }) {
       let iconsDir = path.join(__dirname, "./vendor/heroicons/optimized");
       let values = {};
       let icons = [

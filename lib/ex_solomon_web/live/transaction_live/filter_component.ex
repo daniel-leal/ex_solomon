@@ -7,14 +7,18 @@ defmodule ExSolomonWeb.TransactionLive.FilterComponent do
     ~H"""
     <div>
       <.simple_form for={@form} phx-target={@myself} phx-submit="filter">
-        <div class="grid grid-cols-6 gap-4">
-          <.input
-            field={@form[:kind]}
-            type="select"
-            label="Tipo"
-            prompt="Selecione o tipo"
-            options={Enum.map(@transaction_kinds, &{&1.description, &1.value})}
-          />
+        <div class="grid grid-cols-8 gap-4">
+          <div class="col-span-2">
+            <div
+              id="daterangepicker"
+              date-rangepicker
+              class="grid grid-cols-2 gap-4"
+              phx-hook="DateRangePicker"
+            >
+              <.input field={@form[:date_gte]} label="Data Início" />
+              <.input field={@form[:date_lte]} label="Data Término" />
+            </div>
+          </div>
 
           <.input
             field={@form[:is_fixed]}
@@ -41,14 +45,22 @@ defmodule ExSolomonWeb.TransactionLive.FilterComponent do
           />
 
           <.input
+            field={@form[:kind]}
+            type="select"
+            label="Tipo"
+            prompt="Selecione o tipo"
+            options={Enum.map(@transaction_kinds, &{&1.description, &1.value})}
+          />
+
+          <.input
             field={@form[:credit_card_id]}
             type="select"
             label="Cartão de crédito"
-            prompt="selecione o cartão de crédito"
+            prompt="selecione o cartão"
             options={Enum.map(@credit_cards, &{&1.name, &1.id})}
           />
 
-          <div class="flex flex-row justify-center items-end gap-4 w-full">
+          <div class="flex items-end gap-4">
             <button
               type="submit"
               class={[

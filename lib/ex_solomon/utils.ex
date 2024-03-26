@@ -22,4 +22,11 @@ defmodule ExSolomon.DateUtils do
   def unfreeze do
     Process.delete(:mock_utc_now)
   end
+
+  def parse_date(nil), do: nil
+
+  def parse_date(date_string) do
+    {:ok, parsed_date} = Timex.parse(date_string, "{D}/{0M}/{YYYY}")
+    parsed_date
+  end
 end
