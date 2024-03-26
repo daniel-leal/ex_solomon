@@ -1,9 +1,10 @@
 defmodule ExSolomonWeb.TransactionLive.Index do
   use ExSolomonWeb, :live_view_logged
 
-  alias Phoenix.LiveView.JS
+  import ExSolomonWeb.{Buttons, Pagination}
 
   alias ExSolomon.CreditCards.Queries, as: CreditCardQueries
+  alias ExSolomon.DateUtils
   alias ExSolomon.Filter
   alias ExSolomon.Repo
   alias ExSolomon.Transactions
@@ -11,7 +12,7 @@ defmodule ExSolomonWeb.TransactionLive.Index do
   alias ExSolomon.Transactions.Schemas.Transaction
   alias ExSolomon.Transactions.Types.TransactionTypes
 
-  import ExSolomonWeb.{Buttons, Pagination}
+  alias Phoenix.LiveView.JS
 
   @impl true
   def mount(_params, _session, %{assigns: %{current_user: current_user}} = socket) do
@@ -102,6 +103,8 @@ defmodule ExSolomonWeb.TransactionLive.Index do
 
   defp apply_filters(socket, params) do
     assign(socket, :filters, %{
+      date_gte: Map.get(params, "date_gte"),
+      date_lte: Map.get(params, "date_lte"),
       kind: Map.get(params, "kind"),
       is_fixed: Map.get(params, "is_fixed"),
       is_revenue: Map.get(params, "is_revenue"),
@@ -111,7 +114,20 @@ defmodule ExSolomonWeb.TransactionLive.Index do
   end
 
   defp apply_pagination(socket, params) do
-    filters = Map.get(socket.assigns, :filters, %{})
+    filters =
+      socket
+      |> Map.get(:assigns)
+      |> Map.get(:filters, %{})
+      |> Map.update!(:date_gte, fn
+        nil -> nil
+        "" -> ""
+        date_str -> DateUtils.parse_date(date_str)
+      end)
+      |> Map.update!(:date_lte, fn
+        nil -> nil
+        "" -> ""
+        date_str -> DateUtils.parse_date(date_str)
+      end)
 
     %Scrivener.Page{
       page_number: page_number,
