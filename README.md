@@ -1,18 +1,79 @@
-# ExSolomon
+# 🤑 Ex_Solomon
 
-To start your Phoenix server:
+Solomon is a personal finance application designed to help you manage your finances effectively.
 
-  * Run `mix setup` to install and setup dependencies
-  * Start Phoenix endpoint with `mix phx.server` or inside IEx with `iex -S mix phx.server`
+## 🚀 Getting Started
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
+### 🗒️ Prerequisites
 
-## Learn more
+- <img src="https://static-00.iconduck.com/assets.00/file-type-elixir-icon-329x512-ig4id7j1.png" alt="elixir-logo" width="12" /> Elixir 1.14 or higher
+- 🐳 Docker / Docker Compose
+- 🐘 PostgresSQL 12.1
 
-  * Official website: https://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Forum: https://elixirforum.com/c/phoenix-forum
-  * Source: https://github.com/phoenixframework/phoenix
+### 🐳 Running the Project Locally with docker
+
+1. Clone the repository:
+
+```sh
+git clone https://github.com/daniel-leal/ex_solomon
+```
+
+2. Naviagate to the project directory
+
+```sh
+cd ex_solomon
+```
+
+3. Build the docker
+
+```sh
+docker compose build
+```
+
+4. Run the docker application
+
+```sh
+docker compose up -d
+```
+
+The application will be available at (http://localhost:4000).
+
+### ✅ Running the Tests
+
+To run the tests, use the following command:
+
+```sh
+mix test
+```
+
+
+### ⚙️ Migrations
+
+- Running migrations
+
+```sh
+mix ecto.migrate
+```
+
+- Seed database
+
+```sh
+mix run priv/repo/seeds.exs
+```
+
+- Rollback latest migration
+
+```sh
+mix ecto.rollback
+```
+
+### Contributing
+
+Please read CONTRIBUTING.md for details on our code of conduct, and the process
+of submitting pull requests to us.
+
+### License
+
+This project is licensed under the MIT License - see the LICENSE.md file for details
