@@ -1,5 +1,8 @@
 defmodule ExSolomon.Transactions.Queries do
   alias ExSolomon.Repo
+
+  alias ExSolomon.CreditCards.Queries, as: CreditCardQueries
+  alias ExSolomon.CreditCards.Schemas.CreditCard
   alias ExSolomon.Transactions.Schemas.{Category, Transaction}
 
   import Ecto.Query, warn: false
@@ -36,8 +39,8 @@ defmodule ExSolomon.Transactions.Queries do
   @doc """
   Returns a queryable fixed transactions
   """
-  def fixed_transactions_query do
-    from t in Transaction, where: t.is_fixed
+  def fixed_transactions_query(user_id) do
+    from t in Transaction, where: t.is_fixed and t.user_id == ^user_id
   end
 
   @doc """
@@ -49,18 +52,33 @@ defmodule ExSolomon.Transactions.Queries do
       [%Transaction{}...]
 
   """
-  def list_transactions do
-    fixed_transactions = fixed_transactions_query()
+  def list_transactions(user_id) do
+    fixed_transactions = fixed_transactions_query(user_id)
 
     union_query =
       from q in Transaction,
-        where: not q.is_fixed,
+        where: not q.is_fixed and q.user_id == ^user_id,
         union: ^fixed_transactions
 
     from s in subquery(union_query),
       join: c in assoc(s, :category),
       order_by: [desc_nulls_last: s.date, asc: s.recurring_day],
       preload: [:category]
+  end
+
+  def list_current_invoice_transactions(user_id, credit_card_id) do
+    transactions = list_transactions(user_id)
+    credit_card = CreditCardQueries.get_credit_card!(credit_card_id)
+    {start_invoice, end_invoice} = CreditCard.get_current_invoice(credit_card)
+
+    query =
+      from t in transactions,
+        where:
+          t.credit_card_id == ^credit_card_id and
+            t.date >= ^start_invoice and
+            t.date <= ^end_invoice
+
+    Repo.all(query)
   end
 
   @doc """

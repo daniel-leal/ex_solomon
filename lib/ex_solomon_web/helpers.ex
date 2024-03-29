@@ -67,4 +67,22 @@ defmodule ExSolomonWeb.Helpers do
   def local_date(date) do
     Timex.format!(date, "%d/%m/%Y", :strftime)
   end
+
+  @doc """
+  Formats the given dates of invoice
+
+  ## Examples
+
+  	iex> display_current_invoice(start_date, end_date)
+   	"07/02/2024 - 06/03/2024"
+  """
+  def display_current_invoice({start_date, end_date}) do
+    display_format = "%d/%m/%Y"
+    formatter = :strftime
+
+    start_invoice = Timex.format!(start_date, display_format, formatter)
+    end_invoice = Timex.format!(end_date, display_format, formatter)
+
+    "#{start_invoice} - #{end_invoice}"
+  end
 end

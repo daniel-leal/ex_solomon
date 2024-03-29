@@ -113,7 +113,7 @@ defmodule ExSolomonWeb.TransactionLive.Index do
     })
   end
 
-  defp apply_pagination(socket, params) do
+  defp apply_pagination(%{assigns: %{current_user: current_user}} = socket, params) do
     filters =
       socket
       |> Map.get(:assigns)
@@ -136,7 +136,7 @@ defmodule ExSolomonWeb.TransactionLive.Index do
       total_pages: total_pages,
       entries: entries
     } =
-      TransactionQueries.list_transactions()
+      TransactionQueries.list_transactions(current_user.id)
       |> Filter.fetch(filters)
       |> Repo.paginate(params)
 
