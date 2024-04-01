@@ -85,9 +85,9 @@ defmodule ExSolomon.CreditCardsTest do
 
       result = CreditCard.get_current_invoice(credit_card)
 
-      expected_period = "07/06/2024 - 06/07/2024"
+      expected_period = {~U[2024-06-07 00:00:00Z], ~U[2024-07-06 00:00:00Z]}
 
-      assert String.contains?(result, expected_period)
+      assert result == expected_period
     end
   end
 end

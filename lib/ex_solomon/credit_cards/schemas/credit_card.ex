@@ -14,8 +14,6 @@ defmodule ExSolomon.CreditCards.Schemas.CreditCard do
     field :invoice_start_day, :integer
     field :user_id, :binary_id
 
-    field :current_invoice, :string, virtual: true
-
     belongs_to :user, ExSolomon.Accounts.Schemas.User, define_field: false
 
     timestamps(type: :utc_datetime)
@@ -35,35 +33,23 @@ defmodule ExSolomon.CreditCards.Schemas.CreditCard do
   ## Examples
 
       iex> ExSolomon.CreditCards.Schemas.CreditCard.get_current_invoice(%CreditCard{invoice_start_day: 7})
-      "07/02/2024 - 06/03/2024"
-
-      iex> ExSolomon.CreditCards.Schemas.CreditCard.get_current_invoice(%CreditCard{invoice_start_day: 29})
-      "29/01/2024 - 28/02/2024"
-
+      {~D[2024-02-07], ~D[2024-03-06]}
   """
   def get_current_invoice(%CreditCard{invoice_start_day: day}) do
     current_date = DateUtils.utc_now()
-    display_format = "%d/%m/%Y"
-    formatter = :strftime
 
-    {start_day, end_day} =
-      if current_date.day < day do
-        start_day =
-          current_date
-          |> Timex.shift(months: -1)
-          |> Timex.set(day: day)
+    if current_date.day < day do
+      start_day =
+        current_date
+        |> Timex.shift(months: -1)
+        |> Timex.set(day: day)
 
-        end_day = Timex.shift(start_day, months: 1, days: -1)
-        {start_day, end_day}
-      else
-        start_day = Timex.set(current_date, day: day)
-        end_day = Timex.shift(start_day, months: 1, days: -1)
-        {start_day, end_day}
-      end
-
-    start_invoice = Timex.format!(start_day, display_format, formatter)
-    end_invoice = Timex.format!(end_day, display_format, formatter)
-
-    "#{start_invoice} - #{end_invoice}"
+      end_day = Timex.shift(start_day, months: 1, days: -1)
+      {start_day, end_day}
+    else
+      start_day = Timex.set(current_date, day: day)
+      end_day = Timex.shift(start_day, months: 1, days: -1)
+      {start_day, end_day}
+    end
   end
 end

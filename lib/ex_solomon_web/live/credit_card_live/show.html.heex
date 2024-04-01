@@ -8,11 +8,49 @@
   </:actions>
 </.header>
 
-<.list>
-  <:item title="Limite"><%= @credit_card.limit %></:item>
-  <:item title="Fatura Atual"><%= CreditCard.get_current_invoice(@credit_card) %></:item>
-  <:item title="Melhor dia de compra"><%= @credit_card.invoice_start_day %></:item>
-</.list>
+<div class="grid grid-cols-2 mt-4 gap-8 items-center">
+  <.list>
+    <:item title="Limite"><%= @credit_card.limit %></:item>
+    <:item title="Fatura Atual"><%= @invoice_period %></:item>
+    <:item title="Melhor dia de compra"><%= @credit_card.invoice_start_day %></:item>
+  </.list>
+
+  <div :if={length(@transactions) > 0} class="relative overflow-x-auto">
+    <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-200 dark:bg-gray-700 dark:text-gray-400">
+        <tr>
+          <th scope="col" class="px-6 py-3 rounded-s-lg">
+            Transação
+          </th>
+          <th scope="col" class="px-6 py-3 rounded-e-lg">
+            Valor
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <%= for t <- @transactions do %>
+          <tr>
+            <th
+              scope="row"
+              class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+            >
+              <%= t.description %>
+            </th>
+            <td class="px-6 py-4">
+              <%= t.amount %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot>
+        <tr class="font-semibold text-gray-900 dark:text-white">
+          <th scope="row" class="px-6 py-3 text-base">Total</th>
+          <td class="px-6 py-3"><%= @total_invoice %></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+</div>
 
 <.back navigate={~p"/credit_cards"}>Voltar para a listagem</.back>
 

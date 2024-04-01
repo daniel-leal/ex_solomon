@@ -59,7 +59,7 @@ defmodule ExSolomon.TransactionsTest do
 
       transactions = [variable_transactions, fixed_transactions]
 
-      assert Repo.all(Transactions.Queries.list_transactions()) == transactions
+      assert Repo.all(Transactions.Queries.list_transactions(user.id)) == transactions
     end
 
     test "get_transaction!/1 returns the transaction with given id" do
