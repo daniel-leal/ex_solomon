@@ -1,6 +1,3 @@
-// See the Tailwind configuration guide for advanced usage
-// https://tailwindcss.com/docs/configuration
-
 const fs = require("fs");
 const path = require("path");
 const plugin = require("tailwindcss/plugin");
@@ -106,7 +103,9 @@ module.exports = {
 
   plugins: [
     require("@tailwindcss/forms"),
-    require("flowbite/plugin"),
+    require('flowbite/plugin')({
+      charts: true
+    }),
     // Allows prefixing tailwind classes with LiveView classes to add rules
     // only when LiveView classes are applied, for example:
     //

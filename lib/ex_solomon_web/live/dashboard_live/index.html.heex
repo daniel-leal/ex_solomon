@@ -1,0 +1,36 @@
+<.header>
+  <%= @page_title %>
+</.header>
+
+<div class="grid grid-cols-5 gap-4 my-4">
+  <.metric_card
+    title="Receita total (mês)"
+    amount={1_200_000}
+    last_month_variation={0.5}
+    variation_color="text-emerald-400"
+  />
+  <.metric_card title="Despesa total (mês)" amount={15_123} last_month_variation={1.5} />
+  <.metric_card title="Resultado Financeiro" amount={51811} last_month_variation={0.8} />
+  <.metric_card title="Despesas Fixas (mês)" amount={77_131} last_month_variation={0.2} />
+  <.metric_card title="Despesas Variáveis (mês)" amount={858_531} last_month_variation={0.4} />
+</div>
+
+<div class="grid grid-cols-3 gap-4">
+  <.bar_chart
+    id="bar-chart"
+    title="Receitas x Despesas"
+    subtitle="Útimos 6 meses"
+    dataset={[
+      %{name: "Receita", color: "#0d9488", data: [80.55, 120, 150, 56, 68, 58]},
+      %{name: "Despesa", color: "#e11d48", data: [60, 85, 101, 98, 87, 105]}
+    ]}
+    categories={last_months_names(6)}
+  />
+
+  <.donut_chart
+    id="donut-chart"
+    title="Despesas por categoria (mês)"
+    categories={@categories}
+    dataset={[15.25, 188.15, 365.22, 587.00, 33.55, 0.00, 665.20, 250.00, 0.00]}
+  />
+</div>

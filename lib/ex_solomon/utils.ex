@@ -29,4 +29,19 @@ defmodule ExSolomon.DateUtils do
     {:ok, parsed_date} = Timex.parse(date_string, "{D}/{0M}/{YYYY}")
     parsed_date
   end
+
+  def last_months_names(months_quantity) do
+    month_names = Timex.Translator.get_months_abbreviated("pt")
+
+    Enum.map(
+      1..months_quantity,
+      fn x ->
+        month_names[
+          Timex.now()
+          |> Timex.shift(months: -x)
+          |> Map.get(:month)
+        ]
+      end
+    )
+  end
 end

@@ -1,32 +1,14 @@
-// If you want to use Phoenix channels, run `mix help phx.gen.channel`
-// to get started and then uncomment the line below.
-// import "./user_socket.js"
-
-// You can include dependencies in two ways.
-//
-// The simplest option is to put them in assets/vendor and
-// import them using relative paths:
-//
-//     import "../vendor/some-package.js"
-//
-// Alternatively, you can `npm install some-package --prefix assets` and import
-// them using a path starting with the package name:
-//
-//     import "some-package"
-//
-
-// Include phoenix_html to handle method=PUT/DELETE in forms and buttons.
 import "phoenix_html";
-// Establish Phoenix Socket and LiveView configuration.
 import Alpine from "alpinejs";
 import { Socket } from "phoenix";
 import { LiveSocket } from "phoenix_live_view";
 import topbar from "../vendor/topbar";
 import "flowbite/dist/flowbite.phoenix.js";
 
-import Datepicker from 'flowbite-datepicker/Datepicker';
-import DateRangePicker from 'flowbite-datepicker/DateRangePicker';
+import Datepicker from "flowbite-datepicker/Datepicker";
+import DateRangePicker from "flowbite-datepicker/DateRangePicker";
 import DatepickerLocalePT from "flowbite-datepicker/locales/pt-BR";
+import ApexCharts from "apexcharts";
 
 import darkModeHook from "../vendor/dark_mode";
 
@@ -34,6 +16,7 @@ Alpine.start();
 window.Alpine = Alpine;
 
 let Hooks = {};
+
 Hooks.InitAlpine = {
   updated() {
     this.__x = new Alpine();
@@ -43,7 +26,7 @@ Hooks.InitAlpine = {
 
 Hooks.DarkThemeToggle = darkModeHook;
 
-Object.assign(Datepicker.locales, DatepickerLocalePT)
+Object.assign(Datepicker.locales, DatepickerLocalePT);
 Hooks.DateRangePicker = {
   mounted() {
     const datepickerEl = this.el;
@@ -56,8 +39,188 @@ Hooks.DateRangePicker = {
   },
   updated() {
     this.mounted();
-  }
-}
+  },
+};
+
+Hooks.BarChart = {
+  mounted() {
+    const seriesData = JSON.parse(this.el.dataset.series);
+    const categoriesData = JSON.parse(this.el.dataset.categories);
+
+    const options = {
+      series: seriesData,
+      chart: {
+        type: "bar",
+        height: 400,
+        toolbar: {
+          show: false,
+        },
+      },
+      plotOptions: {
+        bar: {
+          sparkline: { enabled: false },
+          horizontal: false,
+          columnWidth: "85%",
+          endingShape: "rounded",
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        show: true,
+        width: 2,
+        colors: ["transparent"],
+      },
+      xaxis: {
+        labels: {
+          show: true,
+          style: {
+            fontFamily: "Inter, sans-serif",
+            cssClass: "text-xs font-normal fill-gray-500 dark:fill-gray-400",
+          },
+          formatter: function (value) {
+            return value;
+          },
+        },
+        categories: categoriesData,
+      },
+      yaxis: {
+        labels: {
+          show: true,
+          style: {
+            fontFamily: "Inter, sans-serif",
+            cssClass: "text-xs font-normal fill-gray-500 dark:fill-gray-400",
+          },
+          formatter: function (value) {
+            return value;
+          },
+        },
+      },
+      fill: {
+        opacity: 1,
+      },
+      tooltip: {
+        y: {
+          formatter: function (val) {
+            return "R$ " + val;
+          },
+        },
+      },
+      legend: {
+        show: true,
+        position: "bottom",
+      },
+    };
+
+    const chart = new ApexCharts(this.el, options);
+    chart.render();
+  },
+};
+
+Hooks.DonutChart = {
+  mounted() {
+    const seriesData = JSON.parse(this.el.dataset.series);
+    const categoriesData = JSON.parse(this.el.dataset.categories);
+
+    const getChartOptions = () => {
+      return {
+        series: seriesData,
+        colors: [
+          "#1C64F2",
+          "#FCA5A5",
+          "#16BDCA",
+          "#FDBA8C",
+          "#E74694",
+          "#FACC15",
+          "#818CF8",
+          "#D946EF",
+          "#14B8A6",
+        ],
+        chart: {
+          height: 400,
+          width: "100%",
+          type: "donut",
+        },
+        stroke: {
+          colors: ["transparent"],
+          lineCap: "",
+        },
+        plotOptions: {
+          pie: {
+            donut: {
+              labels: {
+                show: true,
+                name: {
+                  show: true,
+                  fontFamily: "Inter, sans-serif",
+                  offsetY: 20,
+                },
+                total: {
+                  showAlways: true,
+                  show: true,
+                  label: "Despesas Totais",
+                  fontFamily: "Inter, sans-serif",
+                  formatter: function (w) {
+                    const sum = w.globals.seriesTotals.reduce((a, b) => {
+                      return a + b;
+                    }, 0);
+                    return "R$ " + sum;
+                  },
+                },
+                value: {
+                  show: true,
+                  fontFamily: "Inter, sans-serif",
+                  offsetY: -20,
+                  formatter: function (value) {
+                    return "R$ " + value;
+                  },
+                },
+              },
+              size: "80%",
+            },
+          },
+        },
+        grid: {
+          padding: {
+            top: -2,
+          },
+        },
+        labels: categoriesData,
+        dataLabels: {
+          enabled: true,
+        },
+        legend: {
+          position: "bottom",
+          fontFamily: "Inter, sans-serif",
+        },
+        yaxis: {
+          labels: {
+            formatter: function (value) {
+              return "R$ " + value;
+            },
+          },
+        },
+        xaxis: {
+          labels: {
+            formatter: function (value) {
+              return "R$ " + value;
+            },
+          },
+          axisTicks: {
+            show: false,
+          },
+          axisBorder: {
+            show: false,
+          },
+        },
+      };
+    };
+
+    const chart = new ApexCharts(this.el, getChartOptions());
+    chart.render();
+  },
+};
 
 let csrfToken = document
   .querySelector("meta[name='csrf-token']")
