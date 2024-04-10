@@ -74,6 +74,8 @@ defmodule ExSolomonWeb.Router do
       live "/transactions/new", TransactionLive.Index, :new
       live "/transactions/:id/edit", TransactionLive.Index, :edit
       live "/transactions/:id", TransactionLive.Show, :show
+
+      live "/dashboard", DashboardLive.Index, :index
     end
   end
 

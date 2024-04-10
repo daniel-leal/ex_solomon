@@ -563,7 +563,7 @@ defmodule ExSolomonWeb.CoreComponents do
                 <span class="absolute -inset-y-px group-hover:bg-zinc-50 sm:rounded-r-xl" />
                 <span
                   :for={action <- @action}
-                  class="relative mx-4 font-medium leading-6 text-foreground hover:text-zinc-400"
+                  class="relative mx-4 font-semibold leading-6 text-emerald-600 hover:text-emerald-500"
                 >
                   <%= render_slot(action, @row_item.(row)) %>
                 </span>
