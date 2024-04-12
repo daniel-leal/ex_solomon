@@ -5,8 +5,8 @@
 <div class="grid grid-cols-5 gap-4 my-4">
   <.metric_card
     title="Receita total (mês)"
-    amount={1_200_000}
-    last_month_variation={0.5}
+    amount={@monthly_revenue}
+    last_month_variation={@last_month_variation}
     variation_color="text-emerald-400"
   />
   <.metric_card title="Despesa total (mês)" amount={15_123} last_month_variation={1.5} />

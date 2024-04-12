@@ -62,10 +62,10 @@ defmodule ExSolomon.Transactions.Schemas.Transaction do
 
     case {is_fixed, date, recurring_day} do
       {false, nil, _} ->
-        add_error(changeset, :date, "can't be blank")
+        add_error(changeset, :date, "campo obrigatório")
 
       {true, _, nil} ->
-        add_error(changeset, :recurring_day, "can't be blank")
+        add_error(changeset, :recurring_day, "campo obrigatório")
 
       {false, _, _} ->
         put_change(changeset, :recurring_day, nil)
@@ -84,7 +84,7 @@ defmodule ExSolomon.Transactions.Schemas.Transaction do
 
     case {kind, credit_card_id} do
       {"credit", nil} ->
-        add_error(changeset, :credit_card_id, "can't be blank")
+        add_error(changeset, :credit_card_id, "campo obrigatório")
 
       _ ->
         changeset

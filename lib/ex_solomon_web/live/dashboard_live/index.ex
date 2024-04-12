@@ -8,15 +8,20 @@ defmodule ExSolomonWeb.DashboardLive.Index do
   alias ExSolomon.Transactions.Queries, as: TransactionsQueries
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(_params, _session, %{assigns: %{current_user: current_user}} = socket) do
     categories = Enum.map(TransactionsQueries.list_categories(), & &1.description)
+    monthly_revenue = TransactionsQueries.month_revenue(Timex.now(), current_user.id)
 
-    {:ok,
-     assign(
-       socket,
-       :categories,
-       categories
-     )}
+    last_month_variation =
+      TransactionsQueries.revenue_variation(monthly_revenue, current_user.id)
+
+    socket =
+      socket
+      |> assign(:categories, categories)
+      |> assign(:monthly_revenue, monthly_revenue)
+      |> assign(:last_month_variation, last_month_variation)
+
+    {:ok, socket}
   end
 
   @impl true
