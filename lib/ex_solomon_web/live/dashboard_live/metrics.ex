@@ -32,10 +32,13 @@ defmodule ExSolomonWeb.DashboardLive.Metrics do
         </svg>
       </div>
       <p class="text-3xl mb-2 font-bold text-gray-700 dark:text-gray-400">
-        <%= Money.new(@amount) %>
+        <%= Money.parse!(@amount) %>
       </p>
       <p class="text-sm text-muted-foreground">
-        <span class={@variation_color}><%= @last_month_variation %>%</span> em relação ao mês anterior
+        <span class={@variation_color}>
+          <%= @last_month_variation %>%
+        </span>
+        em relação ao mês anterior
       </p>
     </div>
     """

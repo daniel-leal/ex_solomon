@@ -66,6 +66,4 @@ import_config "#{config_env()}.exs"
 
 config :money,
   default_currency: "BRL",
-  symbol_space: true,
-  separator: ".",
-  delimiter: ","
+  symbol_space: true
