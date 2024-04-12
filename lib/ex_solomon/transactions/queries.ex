@@ -160,6 +160,46 @@ defmodule ExSolomon.Transactions.Queries do
   end
 
   @doc """
+  Calculates the total expense for the specified user within the given month.
+
+  ## Parameters
+    - `date`: The date for which the month's expense is calculated.
+    - `user_id`: The ID of the user for whom the expense is being calculated.
+
+  ## Returns
+  The total expense as a decimal for the specified user within the given month.
+
+  ## Examples
+      iex> month_revenue(~D[2024-04-01], 123)
+      #Decimal<1234.56>
+  """
+  def month_expense(date, user_id) do
+    beginning_of_month = Timex.beginning_of_month(date)
+    end_of_month = Timex.end_of_month(date)
+    fixed_transactions = fixed_transactions_query(user_id)
+
+    fixed_expense_query =
+      from f in fixed_transactions, where: not f.is_revenue, select: sum(f.amount)
+
+    fixed_expense_money = Repo.one(fixed_expense_query) || Money.new(0)
+    fixed_expense = Money.to_decimal(fixed_expense_money)
+
+    query =
+      from t in Transaction,
+        where:
+          not t.is_revenue and
+            t.user_id == ^user_id and
+            t.date >= ^beginning_of_month and
+            t.date <= ^end_of_month,
+        select: sum(t.amount)
+
+    expense_money = Repo.one(query) || Money.new(0)
+    expense = Money.to_decimal(expense_money)
+
+    Decimal.add(expense, fixed_expense)
+  end
+
+  @doc """
   Calculates the percentage variation in revenue compared to the previous month for the specified
   user.
 
@@ -185,6 +225,37 @@ defmodule ExSolomon.Transactions.Queries do
       current_revenue
       |> Decimal.sub(last_month_revenue)
       |> Decimal.div(last_month_revenue)
+      |> Decimal.mult(100)
+      |> Decimal.round(1)
+    end
+  end
+
+  @doc """
+  Calculates the percentage variation in expense compared to the previous month for the specified
+  user.
+
+  ## Parameters
+    - `current_expense`: The current month's expense for the user.
+    - `user_id`: The ID of the user for whom the expense variation is being calculated.
+
+  ## Returns
+  The percentage variation in expense compared to the previous month as a decimal.
+
+  ## Examples
+      iex> expense_variation(Decimal.new("1500.00"), 123)
+      25.0
+  """
+  def expense_variation(current_expense, user_id) do
+    current_date = Timex.now()
+    last_month = Timex.shift(current_date, months: -1)
+    last_month_expense = month_expense(last_month, user_id)
+
+    if Decimal.eq?(current_expense, 0) and Decimal.eq?(last_month_expense, 0) do
+      Decimal.new("0.0")
+    else
+      current_expense
+      |> Decimal.sub(last_month_expense)
+      |> Decimal.div(last_month_expense)
       |> Decimal.mult(100)
       |> Decimal.round(1)
     end
