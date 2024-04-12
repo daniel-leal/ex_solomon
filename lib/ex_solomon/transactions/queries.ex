@@ -119,6 +119,26 @@ defmodule ExSolomon.Transactions.Queries do
     |> Repo.preload(:credit_card)
   end
 
+  def fixed_revenue(user_id) do
+    fixed_transactions = fixed_transactions_query(user_id)
+
+    fixed_revenue_query =
+      from f in fixed_transactions, where: f.is_revenue, select: sum(f.amount)
+
+    result = Repo.one(fixed_revenue_query) || Money.new(0)
+    Money.to_decimal(result)
+  end
+
+  def fixed_expenses(user_id) do
+    fixed_transactions = fixed_transactions_query(user_id)
+
+    fixed_expenses_query =
+      from f in fixed_transactions, where: not f.is_revenue, select: sum(f.amount)
+
+    result = Repo.one(fixed_expenses_query) || Money.new(0)
+    Money.to_decimal(result)
+  end
+
   @doc """
   Calculates the total revenue for the specified user within the given month.
 
@@ -136,13 +156,8 @@ defmodule ExSolomon.Transactions.Queries do
   def month_revenue(date, user_id) do
     beginning_of_month = Timex.beginning_of_month(date)
     end_of_month = Timex.end_of_month(date)
-    fixed_transactions = fixed_transactions_query(user_id)
 
-    fixed_revenue_query =
-      from f in fixed_transactions, where: f.is_revenue, select: sum(f.amount)
-
-    fixed_revenue_money = Repo.one(fixed_revenue_query) || Money.new(0)
-    fixed_revenue = Money.to_decimal(fixed_revenue_money)
+    fixed_revenue = fixed_revenue(user_id)
 
     query =
       from t in Transaction,
@@ -176,13 +191,8 @@ defmodule ExSolomon.Transactions.Queries do
   def month_expense(date, user_id) do
     beginning_of_month = Timex.beginning_of_month(date)
     end_of_month = Timex.end_of_month(date)
-    fixed_transactions = fixed_transactions_query(user_id)
 
-    fixed_expense_query =
-      from f in fixed_transactions, where: not f.is_revenue, select: sum(f.amount)
-
-    fixed_expense_money = Repo.one(fixed_expense_query) || Money.new(0)
-    fixed_expense = Money.to_decimal(fixed_expense_money)
+    fixed_expenses = fixed_expenses(user_id)
 
     query =
       from t in Transaction,
@@ -196,6 +206,6 @@ defmodule ExSolomon.Transactions.Queries do
     expense_money = Repo.one(query) || Money.new(0)
     expense = Money.to_decimal(expense_money)
 
-    Decimal.add(expense, fixed_expense)
+    Decimal.add(expense, fixed_expenses)
   end
 end

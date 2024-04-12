@@ -21,8 +21,8 @@
     last_month_variation={@monthly_result_variation}
   />
 
-  <.metric_card title="Despesas Fixas (mês)" amount={77_131} last_month_variation={0.2} />
   <.metric_card title="Despesas Variáveis (mês)" amount={858_531} last_month_variation={0.4} />
+  <.metric_card title="Despesas Fixas" amount={@fixed_expenses} show_variation={false} />
 </div>
 
 <div class="grid grid-cols-3 gap-4">

@@ -31,6 +31,8 @@ defmodule ExSolomonWeb.DashboardLive.Index do
 
     monthly_result_variation = Transactions.calculate_variation(monthly_result, last_month_result)
 
+    fixed_expenses = TransactionsQueries.fixed_expenses(current_user.id)
+
     socket =
       socket
       |> assign(:categories, categories)
@@ -40,6 +42,7 @@ defmodule ExSolomonWeb.DashboardLive.Index do
       |> assign(:monthly_expense_variation, monthly_expense_variation)
       |> assign(:monthly_result, monthly_result)
       |> assign(:monthly_result_variation, monthly_result_variation)
+      |> assign(:fixed_expenses, fixed_expenses)
 
     {:ok, socket}
   end
