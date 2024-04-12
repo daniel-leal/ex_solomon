@@ -108,5 +108,65 @@ defmodule ExSolomon.TransactionsTest do
       transaction = insert(:transaction)
       assert %Ecto.Changeset{} = Transactions.change_transaction(transaction)
     end
+
+    test "calculate_variation/2 when variation is positive" do
+      current_value = Decimal.new("1500.00")
+      past_value = Decimal.new("1400.00")
+
+      result = Transactions.calculate_variation(current_value, past_value)
+      expected_result = Decimal.new("7.1")
+
+      assert expected_result == result
+    end
+
+    test "calculate_variation/2 when variation is negative" do
+      current_value = Decimal.new("1500.00")
+      past_value = Decimal.new("1600.00")
+
+      result = Transactions.calculate_variation(current_value, past_value)
+      expected_result = Decimal.new("-6.3")
+
+      assert expected_result == result
+    end
+
+    test "calculate_variation/2 when past_value is zero" do
+      current_value = Decimal.new("1500.00")
+      past_value = Decimal.new("0.00")
+
+      result = Transactions.calculate_variation(current_value, past_value)
+      expected_result = Decimal.new("0.0")
+
+      assert expected_result == result
+    end
+
+    test "calculate_variation/2 when both values are zero" do
+      current_value = Decimal.new("0.00")
+      past_value = Decimal.new("0.00")
+
+      result = Transactions.calculate_variation(current_value, past_value)
+      expected_result = Decimal.new("0.0")
+
+      assert expected_result == result
+    end
+
+    test "calculate_variation/2 when both values are equal" do
+      current_value = Decimal.new("150.00")
+      past_value = Decimal.new("150.00")
+
+      result = Transactions.calculate_variation(current_value, past_value)
+      expected_result = Decimal.new("0.0")
+
+      assert expected_result == result
+    end
+
+    test "calculate_variation/2 when past value is negative" do
+      current_value = Decimal.new("1500.00")
+      past_value = Decimal.new("-30.00")
+
+      result = Transactions.calculate_variation(current_value, past_value)
+      expected_result = Decimal.new("5100.0")
+
+      assert expected_result == result
+    end
   end
 end
