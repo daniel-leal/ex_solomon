@@ -6,16 +6,21 @@
   <.metric_card
     title="Receita total (mês)"
     amount={@monthly_revenue}
-    last_month_variation={@month_revenue_variation}
+    last_month_variation={@monthly_revenue_variation}
     variation_color="text-emerald-400"
   />
   <.metric_card
     title="Despesa total (mês)"
     amount={@monthly_expense}
-    last_month_variation={@month_expense_variation}
+    last_month_variation={@monthly_expense_variation}
   />
 
-  <.metric_card title="Resultado Financeiro" amount={51811} last_month_variation={0.8} />
+  <.metric_card
+    title="Resultado Financeiro"
+    amount={@monthly_result}
+    last_month_variation={@monthly_result_variation}
+  />
+
   <.metric_card title="Despesas Fixas (mês)" amount={77_131} last_month_variation={0.2} />
   <.metric_card title="Despesas Variáveis (mês)" amount={858_531} last_month_variation={0.4} />
 </div>

@@ -4,10 +4,13 @@ defmodule ExSolomon.Transactions do
   """
 
   alias ExSolomon.Transactions.UseCases.{
+    CalculateVariation,
     ChangeTransaction,
     CreateTransaction,
     DeleteTransaction
   }
+
+  defdelegate calculate_variation(current_value, past_value), to: CalculateVariation, as: :execute
 
   defdelegate change_transaction(transaction, attrs \\ %{}),
     to: ChangeTransaction,
