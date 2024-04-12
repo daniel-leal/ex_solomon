@@ -3,8 +3,9 @@ defmodule ExSolomonWeb.DashboardLive.Metrics do
 
   attr :title, :string, required: true
   attr :amount, :integer, required: true
-  attr :last_month_variation, :float, required: true
+  attr :last_month_variation, :float
   attr :variation_color, :string, default: "text-rose-400"
+  attr :show_variation, :boolean, default: true
 
   def metric_card(assigns) do
     ~H"""
@@ -34,7 +35,7 @@ defmodule ExSolomonWeb.DashboardLive.Metrics do
       <p class="text-3xl mb-2 font-bold text-gray-700 dark:text-gray-400">
         <%= Money.parse!(@amount) %>
       </p>
-      <p class="text-sm text-muted-foreground">
+      <p :if={@show_variation} class="text-sm text-muted-foreground">
         <span class={@variation_color}>
           <%= @last_month_variation %>%
         </span>
