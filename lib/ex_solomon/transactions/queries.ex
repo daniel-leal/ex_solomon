@@ -44,6 +44,13 @@ defmodule ExSolomon.Transactions.Queries do
   end
 
   @doc """
+  Returns a queryable fixed transactions
+  """
+  def variable_transactions_query(user_id) do
+    from t in Transaction, where: not t.is_fixed and t.user_id == ^user_id
+  end
+
+  @doc """
   Returns the list of transactions.
 
   ## Examples
@@ -136,6 +143,23 @@ defmodule ExSolomon.Transactions.Queries do
       from f in fixed_transactions, where: not f.is_revenue, select: sum(f.amount)
 
     result = Repo.one(fixed_expenses_query) || Money.new(0)
+    Money.to_decimal(result)
+  end
+
+  def variable_expenses(date, user_id) do
+    beginning_of_month = Timex.beginning_of_month(date)
+    end_of_month = Timex.end_of_month(date)
+    variable_transactions = variable_transactions_query(user_id)
+
+    variable_expenses_query =
+      from f in variable_transactions,
+        where:
+          not f.is_revenue and
+            f.date >= ^beginning_of_month and
+            f.date <= ^end_of_month,
+        select: sum(f.amount)
+
+    result = Repo.one(variable_expenses_query) || Money.new(0)
     Money.to_decimal(result)
   end
 

@@ -15,23 +15,32 @@ defmodule ExSolomonWeb.DashboardLive.Index do
     last_month = Timex.shift(current_date, months: -1)
 
     monthly_revenue = TransactionsQueries.month_revenue(current_date, current_user.id)
-    monthly_expense = TransactionsQueries.month_expense(current_date, current_user.id)
-
     last_month_revenue = TransactionsQueries.month_revenue(last_month, current_user.id)
-    last_month_expense = TransactionsQueries.month_expense(last_month, current_user.id)
-
-    monthly_result = Decimal.sub(monthly_revenue, monthly_expense)
-    last_month_result = Decimal.sub(last_month_revenue, last_month_expense)
 
     monthly_revenue_variation =
       Transactions.calculate_variation(monthly_revenue, last_month_revenue)
 
+    last_month_expense = TransactionsQueries.month_expense(last_month, current_user.id)
+
+    monthly_variable_expenses =
+      TransactionsQueries.variable_expenses(current_date, current_user.id)
+
+    last_month_variable_expenses =
+      TransactionsQueries.variable_expenses(last_month, current_user.id)
+
+    monthly_variable_expenses_variation =
+      Transactions.calculate_variation(monthly_variable_expenses, last_month_variable_expenses)
+
+    fixed_expenses = TransactionsQueries.fixed_expenses(current_user.id)
+
+    monthly_expense = Decimal.add(monthly_variable_expenses, fixed_expenses)
+
     monthly_expense_variation =
       Transactions.calculate_variation(monthly_expense, last_month_expense)
 
+    monthly_result = Decimal.sub(monthly_revenue, monthly_expense)
+    last_month_result = Decimal.sub(last_month_revenue, last_month_expense)
     monthly_result_variation = Transactions.calculate_variation(monthly_result, last_month_result)
-
-    fixed_expenses = TransactionsQueries.fixed_expenses(current_user.id)
 
     socket =
       socket
@@ -43,6 +52,8 @@ defmodule ExSolomonWeb.DashboardLive.Index do
       |> assign(:monthly_result, monthly_result)
       |> assign(:monthly_result_variation, monthly_result_variation)
       |> assign(:fixed_expenses, fixed_expenses)
+      |> assign(:monthly_variable_expenses, monthly_variable_expenses)
+      |> assign(:monthly_variable_expenses_variation, monthly_variable_expenses_variation)
 
     {:ok, socket}
   end

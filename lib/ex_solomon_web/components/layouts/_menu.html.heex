@@ -79,7 +79,7 @@
         x-data="{ active_item: window.location.pathname }"
         class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-white dark:bg-zinc-700 md:dark:bg-zinc-800 dark:border-zinc-600"
       >
-        <li x-bind:class="active_item === '/dashboard' ? 'block text-foreground' : 'text-zinc-400'">
+        <li x-bind:class="['/dashboard', '/'].includes(active_item) ? 'block text-foreground' : 'text-zinc-400'">
           <.link href={~p"/dashboard"} class="flex flex-row py-2 px-3 rounded md:p-0">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -105,7 +105,7 @@
           </.link>
         </li>
 
-        <li x-bind:class="['/transactions', '/'].includes(active_item) ? 'block text-foreground' : 'text-zinc-400'">
+        <li x-bind:class="active_item === '/transactions' ? 'block text-foreground' : 'text-zinc-400'">
           <.link href={~p"/transactions"} class="flex flex-row py-2 px-3 rounded md:p-0">
             <svg
               xmlns="http://www.w3.org/2000/svg"
