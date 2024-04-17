@@ -42,6 +42,20 @@ defmodule ExSolomonWeb.DashboardLive.Index do
     last_month_result = Decimal.sub(last_month_revenue, last_month_expense)
     monthly_result_variation = Transactions.calculate_variation(monthly_result, last_month_result)
 
+    last6_months_revenue =
+      Enum.map(1..6, fn x ->
+        Timex.now()
+        |> Timex.shift(months: -x)
+        |> TransactionsQueries.month_revenue(current_user.id)
+      end)
+
+    last6_months_expense =
+      Enum.map(1..6, fn x ->
+        Timex.now()
+        |> Timex.shift(months: -x)
+        |> TransactionsQueries.month_expense(current_user.id)
+      end)
+
     socket =
       socket
       |> assign(:categories, categories)
@@ -54,6 +68,8 @@ defmodule ExSolomonWeb.DashboardLive.Index do
       |> assign(:fixed_expenses, fixed_expenses)
       |> assign(:monthly_variable_expenses, monthly_variable_expenses)
       |> assign(:monthly_variable_expenses_variation, monthly_variable_expenses_variation)
+      |> assign(:last6_months_revenue, last6_months_revenue)
+      |> assign(:last6_months_expense, last6_months_expense)
 
     {:ok, socket}
   end
