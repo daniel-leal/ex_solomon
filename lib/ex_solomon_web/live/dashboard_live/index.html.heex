@@ -36,8 +36,8 @@
     title="Receitas x Despesas"
     subtitle="Útimos 6 meses"
     dataset={[
-      %{name: "Receita", color: "#0d9488", data: [80.55, 120, 150, 56, 68, 58]},
-      %{name: "Despesa", color: "#e11d48", data: [60, 85, 101, 98, 87, 105]}
+      %{name: "Receita", color: "#0d9488", data: @last6_months_revenue},
+      %{name: "Despesa", color: "#e11d48", data: @last6_months_expense}
     ]}
     categories={last_months_names(6)}
   />
