@@ -16,9 +16,37 @@ defmodule ExSolomon.Transactions.Queries do
 
       iex> list_categories()
       [%Category{}, ...]
+
   """
   def list_categories do
     Repo.all(Category)
+  end
+
+  def get_categories_expenses(user_id) do
+    current_date = Timex.now()
+    beginning_of_month = Timex.beginning_of_month(current_date)
+    end_of_month = Timex.end_of_month(current_date)
+
+    list_categories()
+    |> Enum.map(fn c ->
+      query =
+        from t in Transaction,
+          where:
+            (not t.is_revenue and
+               t.user_id == ^user_id and
+               t.date >= ^beginning_of_month and
+               t.date <= ^end_of_month and
+               t.category_id == ^c.id) or
+              (not t.is_revenue and
+                 is_nil(t.date) and
+                 t.category_id == ^c.id),
+          select: sum(t.amount)
+
+      result = Repo.one(query) || Money.new(0)
+
+      %{category: c.description, amount: Decimal.to_float(Money.to_decimal(result))}
+    end)
+    |> Enum.filter(fn c -> c.amount > 0 end)
   end
 
   @doc """
@@ -126,6 +154,24 @@ defmodule ExSolomon.Transactions.Queries do
     |> Repo.preload(:credit_card)
   end
 
+  @doc """
+  Calculates the total fixed revenue for a given user.
+
+  This function retrieves fixed transactions for a specified user and calculates
+  the total revenue by summing up the amounts of all revenue transactions.
+
+  ## Parameters
+    - `user_id`: The ID of the user for whom the fixed revenue is to be calculated.
+
+  ## Returns
+    The total fixed revenue as a decimal value.
+
+  ## Examples
+
+      iex> fixed_revenue(1)
+      #Decimal<123.45>
+
+  """
   def fixed_revenue(user_id) do
     fixed_transactions = fixed_transactions_query(user_id)
 
@@ -136,6 +182,26 @@ defmodule ExSolomon.Transactions.Queries do
     Money.to_decimal(result)
   end
 
+  @doc """
+  Calculates the total fixed expenses for a given user.
+
+  This function retrieves fixed transactions for a specified user and calculates
+  the total expenses by summing up the amounts of all non-revenue transactions.
+
+  ## Parameters
+
+  - `user_id`: The ID of the user for whom the fixed expenses are to be calculated.
+
+  ## Returns
+
+  The total fixed expenses as a decimal value.
+
+  ## Examples
+
+      iex> fixed_expenses(1)
+      #Decimal<67.89>
+
+  """
   def fixed_expenses(user_id) do
     fixed_transactions = fixed_transactions_query(user_id)
 
@@ -146,6 +212,28 @@ defmodule ExSolomon.Transactions.Queries do
     Money.to_decimal(result)
   end
 
+  @doc """
+  Calculates the total variable expenses for a given user within a specified month.
+
+  This function retrieves variable transactions for a specified user that fall within
+  the given month and calculates the total expenses by summing up the amounts of all
+  non-revenue transactions.
+
+  ## Parameters
+
+  - `date`: The date within the month for which variable expenses are to be calculated.
+  - `user_id`: The ID of the user for whom the variable expenses are to be calculated.
+
+  ## Returns
+
+  The total variable expenses as a decimal value.
+
+  ## Examples
+
+      iex> variable_expenses({2024, 4, 16}, 1)
+      #Decimal<50.00>
+
+  """
   def variable_expenses(date, user_id) do
     beginning_of_month = Timex.beginning_of_month(date)
     end_of_month = Timex.end_of_month(date)

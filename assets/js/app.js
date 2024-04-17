@@ -127,13 +127,13 @@ Hooks.DonutChart = {
       return {
         series: seriesData,
         colors: [
-          "#1C64F2",
-          "#FCA5A5",
-          "#16BDCA",
-          "#FDBA8C",
           "#E74694",
           "#FACC15",
+          "#16BDCA",
           "#818CF8",
+          "#FCA5A5",
+          "#1C64F2",
+          "#FDBA8C",
           "#D946EF",
           "#14B8A6",
         ],

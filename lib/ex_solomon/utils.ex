@@ -34,7 +34,7 @@ defmodule ExSolomon.DateUtils do
     month_names = Timex.Translator.get_months_abbreviated("pt")
 
     Enum.map(
-      1..months_quantity,
+      months_quantity..1,
       fn x ->
         month_names[
           Timex.now()

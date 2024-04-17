@@ -45,7 +45,7 @@
   <.donut_chart
     id="donut-chart"
     title="Despesas por categoria (mês)"
-    categories={@categories}
-    dataset={[15.25, 188.15, 365.22, 587.00, 33.55, 0.00, 665.20, 250.00, 0.00]}
+    categories={Enum.map(@categories_expenses, fn c -> c.category end)}
+    dataset={Enum.map(@categories_expenses, fn c -> c.amount end)}
   />
 </div>
