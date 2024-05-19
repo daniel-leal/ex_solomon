@@ -1,8 +1,15 @@
 {
+  "scripts": {
+    "deploy": "cd .. && mix assets.deploy && rm -f _build/esbuild*"
+  },
   "dependencies": {
     "alpinejs": "^3.13.5",
     "apexcharts": "^3.48.0",
     "flowbite": "^2.3.0",
     "flowbite-datepicker": "^1.2.6"
+  },
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.2.1",
+    "tailwindcss": "^2.0.2"
   }
 }

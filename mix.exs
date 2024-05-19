@@ -57,7 +57,8 @@ defmodule ExSolomon.MixProject do
       {:timex, "~> 3.0"},
       {:mock, "~> 0.3.0", only: :test},
       {:scrivener_ecto, "~> 2.0"},
-      {:credo, "~> 1.6", only: [:dev, :test], runtime: false}
+      {:credo, "~> 1.6", only: [:dev, :test], runtime: false},
+      {:bunt, "~> 0.2.1"}
     ]
   end
 
