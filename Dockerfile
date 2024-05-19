@@ -7,13 +7,13 @@
 # This file is based on these images:
 #
 #   - https://hub.docker.com/r/hexpm/elixir/tags - for the build image
-#   - https://hub.docker.com/_/debian?tab=tags&page=1&name=bullseye-20231009-slim - for the release image
+#   - https://hub.docker.com/_/debian?tab=tags&page=1&name=bullseye-20240513-slim - for the release image
 #   - https://pkgs.org/ - resource for finding needed packages
-#   - Ex: hexpm/elixir:1.16.0-erlang-26.1.2-debian-bullseye-20231009-slim
+#   - Ex: hexpm/elixir:1.16.2-erlang-26.1.2-debian-bullseye-20240513-slim
 #
-ARG ELIXIR_VERSION=1.16.0
+ARG ELIXIR_VERSION=1.16.2
 ARG OTP_VERSION=26.1.2
-ARG DEBIAN_VERSION=bullseye-20231009-slim
+ARG DEBIAN_VERSION=bullseye-20240513-slim
 
 ARG BUILDER_IMAGE="hexpm/elixir:${ELIXIR_VERSION}-erlang-${OTP_VERSION}-debian-${DEBIAN_VERSION}"
 ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
@@ -21,15 +21,19 @@ ARG RUNNER_IMAGE="debian:${DEBIAN_VERSION}"
 FROM ${BUILDER_IMAGE} as builder
 
 # install build dependencies
-RUN apt-get update -y && apt-get install -y build-essential git \
-    && apt-get clean && rm -f /var/lib/apt/lists/*_*
+RUN apt-get update -y && apt-get install -y build-essential curl git \
+  && apt-get clean && rm -f /var/lib/apt/lists/*_*
+
+# install Node.js and npm using curl
+RUN curl -fsSL https://deb.nodesource.com/setup_16.x | bash - \
+  && apt-get install -y nodejs
 
 # prepare build dir
 WORKDIR /app
 
 # install hex + rebar
 RUN mix local.hex --force && \
-    mix local.rebar --force
+  mix local.rebar --force
 
 # set build ENV
 ENV MIX_ENV="prod"
@@ -50,6 +54,11 @@ COPY priv priv
 COPY lib lib
 
 COPY assets assets
+
+# install npm dependencies and build assets
+COPY assets/package.json assets/package-lock.json ./assets/
+RUN npm install --prefix ./assets
+RUN npm run deploy --prefix ./assets
 
 # compile assets
 RUN mix assets.deploy
