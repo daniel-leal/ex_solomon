@@ -1,6 +1,7 @@
 # 🤑 Ex_Solomon
 
 [![CI](https://github.com/daniel-leal/ex_solomon/actions/workflows/ci.yml/badge.svg)](https://github.com/daniel-leal/ex_solomon/actions/workflows/ci.yml)
+[![CD](https://github.com/daniel-leal/ex_solomon/actions/workflows/cd-flyio.yml/badge.svg)](https://github.com/daniel-leal/ex_solomon/actions/workflows/cd-flyio.yml)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
 Solomon is a personal finance application designed to help you manage your finances effectively.
