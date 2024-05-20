@@ -2,7 +2,7 @@
   <%= @page_title %>
 </.header>
 
-<div class="grid grid-cols-5 gap-4 my-4">
+<div class="grid sm:grid-cols-1 md:grid-cols-5 lg:grid-cols-5 gap-4 my-4">
   <.metric_card
     title="Receita total (mês)"
     amount={@monthly_revenue}
@@ -30,7 +30,7 @@
   <.metric_card title="Despesas Fixas" amount={@fixed_expenses} show_variation={false} />
 </div>
 
-<div class="grid grid-cols-3 gap-4">
+<div class="grid sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-4">
   <.bar_chart
     id="bar-chart"
     title="Receitas x Despesas"

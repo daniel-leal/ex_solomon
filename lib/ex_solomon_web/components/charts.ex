@@ -12,7 +12,7 @@ defmodule ExSolomonWeb.Charts do
 
   def bar_chart(assigns) do
     ~H"""
-    <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6 col-span-2">
+    <div class="w-full bg-white rounded-lg shadow dark:bg-gray-800 p-4 md:p-6 md:col-span-2 lg:col-span-2">
       <h5 class="text-md leading-none text-gray-900 dark:text-white pe-1">
         <%= @title %>
       </h5>
