@@ -12,12 +12,6 @@ defmodule ExSolomon.Transactions.Types.TransactionTypes do
   end
 
   def get_description(kind) do
-    case Enum.find(@kinds, &(&1.value == kind)) do
-      nil ->
-        nil
-
-      kind ->
-        kind.description
-    end
+    Enum.find_value(@kinds, &if(&1.value == kind, do: &1.description))
   end
 end
